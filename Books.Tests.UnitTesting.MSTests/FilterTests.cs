@@ -1,4 +1,6 @@
 ﻿using Books.Classes;
+using Books.DbContext;
+using Books.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -64,12 +66,12 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetTitle_ReturnsTitle()
+        public void Test_SetTitle_SetValueToTitle()
         {
             string expectedTitle = "Title";
 
             Filter filter = new Filter();
-            
+
             filter.Title = expectedTitle;
 
             Assert.AreEqual(expectedTitle, filter.Title);
@@ -86,7 +88,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetGenre_ReturnsGenre()
+        public void Test_SetGenre_SetValueToGenre()
         {
             string expectedGenre = "Genre";
 
@@ -108,7 +110,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetAuthor_ReturnsAuthor()
+        public void Test_SetAuthor_SetValueToAuthor()
         {
             string expectedAuthor = "Author";
 
@@ -130,7 +132,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetPublisher_ReturnsPublisher()
+        public void Test_SetPublisher_SetValueToPublisher()
         {
             string expectedPublisher = "Publisher";
 
@@ -152,7 +154,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetMoreThanPages_ReturnsMoreThanPages()
+        public void Test_SetMoreThanPages_SetValueToMoreThanPages()
         {
             int? expectedMoreThanPages = 100;
 
@@ -174,7 +176,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetLessThanPages_ReturnsLessThanPages()
+        public void Test_SetLessThanPages_SetValueToLessThanPages()
         {
             int? expectedLessThanPages = 100;
 
@@ -196,7 +198,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetPublishedBefore_ReturnsPublishedBefore()
+        public void Test_SetPublishedBefore_SetValueToPublishedBefore()
         {
             DateTime? expectedPublishedBefore = DateTime.MinValue;
 
@@ -218,7 +220,7 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_SetPublishedAfter_ReturnsPublishedAfter()
+        public void Test_SetPublishedAfter_SetValueToPublishedAfter()
         {
             DateTime? expectedPublishedAfter = DateTime.MinValue;
 
@@ -232,7 +234,7 @@ namespace Books.Tests.UnitTesting.MSTests
         [TestMethod]
         public void Test_FindBooksInContext_WhenInputContextIsNull_ThrowsArgumentNullException()
         {
-            Context context = null;
+            LibraryContext context = null;
 
             Filter filter = new Filter();
 
@@ -274,20 +276,22 @@ namespace Books.Tests.UnitTesting.MSTests
                 filterParameterPublishedBefore = DateTime.Parse(filterParameterPublishedBeforeString);
             }
 
-            using (Context context = new Context())
+            using (LibraryContext context = new LibraryContext())
             {
                 context.ChangeTracker.Clear();
 
-                ModelOfBook[] modelsOfBooks = new ModelOfBook[5];
-                modelsOfBooks[0] = new ModelOfBook("Title1", 100, "Genre1", "Author1", "Publisher1", new DateTime(1563, 6, 24));
-                modelsOfBooks[1] = new ModelOfBook("Title2", 200, "Genre2", "Author2", "Publisher2", new DateTime(1663, 7, 25));
-                modelsOfBooks[2] = new ModelOfBook("Title3", 300, "Genre2", "Author3", "Publisher3", new DateTime(1763, 11, 22));
-                modelsOfBooks[3] = new ModelOfBook("Title4", 400, "Genre3", "Author3", "Publisher4", new DateTime(1863, 12, 21));
-                modelsOfBooks[4] = new ModelOfBook("Title5", 500, "Genre4", "Author4", "Publisher5", new DateTime(1963, 1, 24));
+                BookModel[] modelsOfBooks = new BookModel[5];
+                modelsOfBooks[0] = new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", new DateTime(1563, 6, 24));
+                modelsOfBooks[1] = new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", new DateTime(1663, 7, 25));
+                modelsOfBooks[2] = new BookModel("Title3", 300, "Genre2", "Author3", "Publisher3", new DateTime(1763, 11, 22));
+                modelsOfBooks[3] = new BookModel("Title4", 400, "Genre3", "Author3", "Publisher4", new DateTime(1863, 12, 21));
+                modelsOfBooks[4] = new BookModel("Title5", 500, "Genre4", "Author4", "Publisher5", new DateTime(1963, 1, 24));
 
-                for(int i = 0; i < modelsOfBooks.Length; i++)
+                LibraryRepository libraryRepository = new LibraryRepository(context);
+
+                for (int i = 0; i < modelsOfBooks.Length; i++)
                 {
-                    DBInstruments.AddBook(context, modelsOfBooks[i]);
+                    libraryRepository.AddBook(modelsOfBooks[i]);
                 }
 
                 Filter filter = new Filter();
@@ -301,7 +305,7 @@ namespace Books.Tests.UnitTesting.MSTests
                 filter.PublishedAfter = filterParameterPublishedAfter;
                 filter.PublishedBefore = filterParameterPublishedBefore;
 
-                Dictionary<uint, ModelOfBook> actualResultsOfFiltering = filter.FindBooksInContext(context);
+                Dictionary<uint, BookModel> actualResultsOfFiltering = filter.FindBooksInContext(context);
 
                 Assert.AreEqual(expectedResultsOfFiltering, actualResultsOfFiltering.Count);
             }

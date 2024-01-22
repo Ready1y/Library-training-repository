@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Books.Classes;
 using System.IO;
+using Books.Models;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -13,7 +14,7 @@ namespace Books.Tests.UnitTesting.MSTests
         [TestMethod]
         public void Test_PrintResultInConsole_WhenInputDictionaryIsNull_ThrowsArgumentNullException()
         {
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = null;
+            Dictionary<uint, BookModel> dictionaryOfBooks = null;
 
             Action action = () => Printer.PrintResultInConsole(dictionaryOfBooks);
 
@@ -30,10 +31,10 @@ namespace Books.Tests.UnitTesting.MSTests
                 "Title2"
             };
 
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = new Dictionary<uint, ModelOfBook>
+            Dictionary<uint, BookModel> dictionaryOfBooks = new Dictionary<uint, BookModel>
             {
-                { 1, new ModelOfBook("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue) },
-                { 2, new ModelOfBook("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue) }
+                { 1, new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue) },
+                { 2, new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue) }
             };
 
             using (StringWriter stringWriter = new StringWriter())
@@ -54,7 +55,7 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_PrintResultsToFile_WhenInputDictionaryIsNull_ThrowsArgumentNullException()
         {
             string directoryPath = string.Empty;
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = null;
+            Dictionary<uint, BookModel> dictionaryOfBooks = null;
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, dictionaryOfBooks);
 
@@ -65,9 +66,9 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_PrintResultsToFile_WhenInputPathIsNull_ThrowsArgumentException()
         {
             string directoryPath = null;
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = new Dictionary<uint, ModelOfBook>
+            Dictionary<uint, BookModel> dictionaryOfBooks = new Dictionary<uint, BookModel>
             {
-                { 1, new ModelOfBook() }
+                { 1, new BookModel() }
             };
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, dictionaryOfBooks);
@@ -79,9 +80,9 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_PrintResultsToFile_WhenInputPathContainsInvalidPathChars_ThrowsArgumentException()
         {
             string directoryPath = ".|Files|";
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = new Dictionary<uint, ModelOfBook>
+            Dictionary<uint, BookModel> dictionaryOfBooks = new Dictionary<uint, BookModel>
             {
-                { 1, new ModelOfBook() }
+                { 1, new BookModel() }
             };
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, dictionaryOfBooks);
@@ -93,9 +94,9 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_PrintResultsToFile_WhenInputFileDirectoryIsWrong_ThrowsArgumentException()
         {
             string directoryPath = "./Filessssss/";
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = new Dictionary<uint, ModelOfBook>
+            Dictionary<uint, BookModel> dictionaryOfBooks = new Dictionary<uint, BookModel>
             {
-                { 1, new ModelOfBook() }
+                { 1, new BookModel() }
             };
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, dictionaryOfBooks);
@@ -120,10 +121,10 @@ namespace Books.Tests.UnitTesting.MSTests
                 "Title2,200,Genre2,01.01.0001,Author2,Publisher2"
             };
 
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = new Dictionary<uint, ModelOfBook>
+            Dictionary<uint, BookModel> dictionaryOfBooks = new Dictionary<uint, BookModel>
             {
-                { 1, new ModelOfBook("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue) },
-                { 2, new ModelOfBook("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue) }
+                { 1, new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue) },
+                { 2, new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue) }
             };
 
             Printer.PrintResultsToFile(directoryOfFile, dictionaryOfBooks);

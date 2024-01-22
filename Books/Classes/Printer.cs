@@ -1,4 +1,4 @@
-﻿using Books.Classes;
+﻿using Books.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ namespace Books.Classes
 {
     public class Printer
     {
-        public static void PrintResultInConsole(Dictionary<uint, ModelOfBook> dictiunaryOfBooks)
+        public static void PrintResultInConsole(Dictionary<uint, BookModel> dictiunaryOfBooks)
         {
             if(dictiunaryOfBooks == null)
             {
@@ -27,7 +27,7 @@ namespace Books.Classes
             }
         }
 
-        public static void PrintResultsToFile(string directoryOfFile, Dictionary<uint, ModelOfBook> dictiunaryOfBooks)
+        public static void PrintResultsToFile(string directoryOfFile, Dictionary<uint, BookModel> dictiunaryOfBooks)
         {
             if (dictiunaryOfBooks == null)
             {

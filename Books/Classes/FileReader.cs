@@ -1,79 +1,61 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using Books.Models;
+using CsvHelper;
 
 namespace Books.Classes
 {
     public class FileReader
     {
-        public static ModelOfBook[] Read(string filePath)
+        public static BookModel[] Read(string filePath)
         {
             PathValidator.ValidationForFile(filePath);
 
-            string[] lines = null;
-
-            try
+            using (var reader = new StreamReader(filePath))
             {
-                lines = File.ReadAllLines(filePath);
+                int fileLength = File.ReadAllLines(filePath).Length;
 
-                if (lines.Length == 0 || lines.Length == 1)
+                if(fileLength == 1 || fileLength == 0)
                 {
                     return null;
                 }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
 
-                return null;
-            }
+                BookModel[] bookModels = new BookModel[fileLength - 1];
+                int i = 0;
 
-            ModelOfBook[] collectionOfModels = new ModelOfBook[lines.Length - 1];
-
-            string[] orderOfTypes = new string[]
-            {
-                "Title",
-                "Pages",
-                "Genre",
-                "ReleaseDate",
-                "Author",
-                "Publisher"
-            };
-            StringBuilder infoAboutType = new StringBuilder();
-
-            int numberOfType = 0;
-
-            for(int i = 1; i < lines.Length; i++)
-            {
-                string line = lines[i];
-                collectionOfModels[i-1] = new ModelOfBook();
-
-                for(int j = 0; j < line.Length; j++)
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    if (line[j] == ',' && line[j + 1] != ' ')
-                    {
-                        collectionOfModels[i - 1].Update(orderOfTypes[numberOfType], infoAboutType.ToString());
+                    reader.BaseStream.Position = 0;
 
-                        numberOfType++;
-                        infoAboutType.Clear();
-                    }
-                    else if(j == line.Length - 1)
+                    csv.Read();
+                    csv.ReadHeader();
+                    while (csv.Read())
                     {
-                        infoAboutType.Append(line[j]);
+                        bookModels[i] = new BookModel();
 
-                        collectionOfModels[i - 1].Update(orderOfTypes[numberOfType], infoAboutType.ToString());
+                        bookModels[i].Title = csv.GetField("Title");
+                        bookModels[i].Pages = int.Parse(csv.GetField("Pages"));
+                        bookModels[i].Genre = csv.GetField("Genre");
 
-                        numberOfType = 0;
-                        infoAboutType.Clear();
-                    }
-                    else
-                    {
-                        infoAboutType.Append(line[j]);
+                        if (!DateTime.TryParse(csv.GetField("ReleaseDate"), out DateTime time))
+                        {
+                            time = DateTime.MaxValue;
+                        }
+
+                        time = TimeZoneInfo.ConvertTimeToUtc(time, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
+                        bookModels[i].ReleaseDate = time;
+
+                        bookModels[i].Author = csv.GetField("Author");
+                        bookModels[i].Publisher = csv.GetField("Publisher");
+
+                        i++;
                     }
                 }
-            }
 
-            return collectionOfModels;
+                return bookModels;
+            }
         }
     }
 }

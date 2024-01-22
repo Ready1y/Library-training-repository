@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Books.DbContext;
+using Books.Entities;
+using Books.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace Books.Classes
@@ -50,29 +51,29 @@ namespace Books.Classes
         public DateTime? PublishedBefore { get; set; }
         public DateTime? PublishedAfter { get; set; }
 
-        public Dictionary<uint, ModelOfBook> FindBooksInContext(Context context)
+        public Dictionary<uint, BookModel> FindBooksInContext(LibraryContext context)
         {
             if(context == null)
             {
                 throw new ArgumentNullException(nameof(context), "Context is null");
             }
 
-            Dictionary<uint, ModelOfBook> dictionaryOfBooks = new Dictionary<uint, ModelOfBook>();
+            Dictionary<uint, BookModel> dictionaryOfBooks = new Dictionary<uint, BookModel>();
             uint numberOfBookInDictionary = 1;
 
-            Dictionary<string, Genre> genresInContext = new Dictionary<string, Genre>();
+            Dictionary<string, GenreEntity> genresInContext = new Dictionary<string, GenreEntity>();
             foreach(var genre in context.Genres.Local)
             {
                 genresInContext[genre.Id.ToString()] = genre;
             }
 
-            Dictionary<string, Author> authorsInContext = new Dictionary<string, Author>();
+            Dictionary<string, AuthorEntity> authorsInContext = new Dictionary<string, AuthorEntity>();
             foreach (var author in context.Authors.Local)
             {
                 authorsInContext[author.Id.ToString()] = author;
             }
 
-            Dictionary<string, Publisher> publishersInContext = new Dictionary<string, Publisher>();
+            Dictionary<string, PublisherEntity> publishersInContext = new Dictionary<string, PublisherEntity>();
             foreach (var publisher in context.Publishers.Local)
             {
                 publishersInContext[publisher.Id.ToString()] = publisher;
@@ -124,7 +125,7 @@ namespace Books.Classes
                         continue;
                 }
 
-                ModelOfBook modelOfBook = new ModelOfBook(book.Title, book.Pages, genreName, authorName, publisherName, book.ReleaseDate);
+                BookModel modelOfBook = new BookModel(book.Title, book.Pages, genreName, authorName, publisherName, book.ReleaseDate);
 
                 dictionaryOfBooks.Add(numberOfBookInDictionary++, modelOfBook);
             }

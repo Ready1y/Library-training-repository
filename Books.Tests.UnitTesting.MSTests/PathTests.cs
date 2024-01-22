@@ -2,7 +2,7 @@
 using System.IO;
 using System;
 
-namespace Books.Tests.UnitTesting.MSTest
+namespace Books.Tests.UnitTesting.MSTests
 {
     using Path = Classes.Path;
 
