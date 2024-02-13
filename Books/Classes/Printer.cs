@@ -8,30 +8,30 @@ namespace Books.Classes
 {
     public class Printer
     {
-        public static void PrintResultInConsole(Dictionary<uint, BookModel> dictiunaryOfBooks)
+        public static void PrintResultInConsole(List<BookModel> listOfBooks)
         {
-            if(dictiunaryOfBooks == null)
+            if (listOfBooks == null)
             {
-                throw new ArgumentNullException(nameof(dictiunaryOfBooks), "Dictiunary of books is null");
+                throw new ArgumentNullException(nameof(listOfBooks), "Dictiunary of books is null");
             }
 
             Console.Write("Count of books with these settings are ");
-            Console.WriteLine(dictiunaryOfBooks.Count);
+            Console.WriteLine(listOfBooks.Count);
 
-            if(dictiunaryOfBooks.Count != 0)
+            if (listOfBooks.Count != 0)
             {
-                for(uint i = 1;  i <= dictiunaryOfBooks.Count; i++)
+                foreach(BookModel book in listOfBooks)
                 {
-                    Console.WriteLine(dictiunaryOfBooks[i].Title);
+                    Console.WriteLine(book.Title);
                 }
             }
         }
 
-        public static void PrintResultsToFile(string directoryOfFile, Dictionary<uint, BookModel> dictiunaryOfBooks)
+        public static void PrintResultsToFile(string directoryOfFile, List<BookModel> listOfBooks)
         {
-            if (dictiunaryOfBooks == null)
+            if (listOfBooks == null)
             {
-                throw new ArgumentNullException(nameof(dictiunaryOfBooks), "Dictiunary of books is null");
+                throw new ArgumentNullException(nameof(listOfBooks), "Dictiunary of books is null");
             }
 
             PathValidator.ValidationForDirectory(directoryOfFile);
@@ -50,19 +50,19 @@ namespace Books.Classes
 
             using (StreamWriter streamWriter = new StreamWriter(filePath.ToString()))
             {
-                for (uint i = 1; i <= dictiunaryOfBooks.Count; i++)
+                foreach (BookModel bookModel in listOfBooks)
                 {
-                    streamWriter.Write(dictiunaryOfBooks[i].Title);
+                    streamWriter.Write(bookModel.Title);
                     streamWriter.Write(",");
-                    streamWriter.Write(dictiunaryOfBooks[i].Pages);
+                    streamWriter.Write(bookModel.Pages);
                     streamWriter.Write(",");
-                    streamWriter.Write(dictiunaryOfBooks[i].Genre);
+                    streamWriter.Write(bookModel.Genre);
                     streamWriter.Write(",");
-                    streamWriter.Write(dictiunaryOfBooks[i].ReleaseDate.ToShortDateString());
+                    streamWriter.Write(bookModel.ReleaseDate.ToShortDateString());
                     streamWriter.Write(",");
-                    streamWriter.Write(dictiunaryOfBooks[i].Author);
+                    streamWriter.Write(bookModel.Author);
                     streamWriter.Write(",");
-                    streamWriter.WriteLine(dictiunaryOfBooks[i].Publisher);
+                    streamWriter.WriteLine(bookModel.Publisher);
                 }
             }
         }

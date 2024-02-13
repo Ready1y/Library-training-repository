@@ -3,16 +3,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Books.DbContext
 {
-    public class LibraryContext : Microsoft.EntityFrameworkCore.DbContext
+    using DbContext = Microsoft.EntityFrameworkCore.DbContext;
+
+    public class LibraryContext : DbContext
     {
         public DbSet<BookEntity> Books { get; set; }
         public DbSet<GenreEntity> Genres { get; set; }
         public DbSet<AuthorEntity> Authors { get; set; }
         public DbSet<PublisherEntity> Publishers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
         {
-            optionsBuilder.UseNpgsql(@"Host=localhost;Port=1234;Database=task5;Username=postgres;Password=12345");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookEntity>()
+                .HasMany(b => b.Authors)
+                .WithMany(a => a.Books);
+
+            modelBuilder.Entity<BookEntity>()
+                .HasMany(b => b.Genres)
+                .WithMany(g => g.Books);
+
+            modelBuilder.Entity<BookEntity>()
+                .HasMany(b => b.Publishers)
+                .WithMany(p => p.Books);
         }
     }
 }

@@ -27,7 +27,12 @@ namespace Books.Models
         }
         public DateTime ReleaseDate
         {
-            get => _releaseDate; set => _releaseDate = value;
+            get => _releaseDate;
+            set
+            {
+                _releaseDate = value.ToUniversalTime();
+                _releaseDate = TimeZoneInfo.ConvertTimeToUtc(_releaseDate, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
+            }
         }
         public string Author
         {

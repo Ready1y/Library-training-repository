@@ -1,6 +1,7 @@
 ﻿using Books.Classes;
 using Books.DbContext;
 using Books.Models;
+using Books.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

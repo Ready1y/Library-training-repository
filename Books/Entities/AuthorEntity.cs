@@ -9,11 +9,5 @@ namespace Books.Entities
         public string Name { get; set; }
 
         public ICollection<BookEntity> Books { get; set; }
-
-        public AuthorEntity(Guid id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
     }
 }
