@@ -1,5 +1,6 @@
 ﻿using Books.Classes;
 using Books.DbContext;
+using Books.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +12,10 @@ namespace Books
     public static class Startup
     {
         public static readonly IServiceProvider ServiceProvider;
-        public static readonly IConfiguration Configuration;
 
         static Startup()
         {
-            Configuration = new ConfigurationBuilder()
+            IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build()
@@ -23,10 +23,12 @@ namespace Books
 
             IServiceCollection services = new ServiceCollection();
 
-            string connectionString = @"Host=localhost;Port=1234;Database=task5;Username=postgres;Password=12345";
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<LibraryContext>(options => options.UseNpgsql(connectionString));
-            services.AddSingleton<Filter>(Configuration.GetSection("FilterSettings").Get<Filter>());
+            services.AddDbContext<LibraryContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
+            services.AddSingleton<Filter>(configuration.GetSection("FilterSettings").Get<Filter>());
+            services.AddScoped<LibraryRepository>();
+            services.AddScoped<FileReader>();
             services.AddSingleton<App>();
 
             ServiceProvider = services.BuildServiceProvider();

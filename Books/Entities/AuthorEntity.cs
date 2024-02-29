@@ -9,5 +9,17 @@ namespace Books.Entities
         public string Name { get; set; }
 
         public ICollection<BookEntity> Books { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AuthorEntity entity &&
+                   Id.Equals(entity.Id) &&
+                   Name == entity.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Name);
+        }
     }
 }

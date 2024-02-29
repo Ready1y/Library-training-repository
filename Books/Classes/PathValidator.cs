@@ -7,6 +7,8 @@ namespace Books.Classes
 
     public class PathValidator
     {
+        private const int _notFound = -1;
+
         public static void ValidationForFile(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))
@@ -16,7 +18,7 @@ namespace Books.Classes
 
             char[] invalidPathChars = PathIO.GetInvalidPathChars();
 
-            if (filePath.IndexOfAny(invalidPathChars) != -1)
+            if (filePath.IndexOfAny(invalidPathChars) != _notFound)
             {
                 throw new ArgumentException("Wrong file path, invalid chars into file path", nameof(filePath));
             }
@@ -43,7 +45,7 @@ namespace Books.Classes
 
             char[] invalidPathChars = PathIO.GetInvalidPathChars();
 
-            if (directoryPath.IndexOfAny(invalidPathChars) != -1)
+            if (directoryPath.IndexOfAny(invalidPathChars) != _notFound)
             {
                 throw new ArgumentException("Wrong file path, invalid chars into file path", nameof(directoryPath));
             }

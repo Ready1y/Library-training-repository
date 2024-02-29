@@ -8,49 +8,44 @@ namespace Books.Classes
 {
     public class Printer
     {
-        public static void PrintResultInConsole(List<BookModel> listOfBooks)
+        public static void PrintResultInConsole(IReadOnlyCollection<BookModel> books)
         {
-            if (listOfBooks == null)
+            if (books == null)
             {
-                throw new ArgumentNullException(nameof(listOfBooks), "Dictiunary of books is null");
+                throw new ArgumentNullException(nameof(books), "Dictionary of books is null");
             }
 
             Console.Write("Count of books with these settings are ");
-            Console.WriteLine(listOfBooks.Count);
+            Console.WriteLine(books.Count);
 
-            if (listOfBooks.Count != 0)
+            foreach(BookModel book in books)
             {
-                foreach(BookModel book in listOfBooks)
-                {
-                    Console.WriteLine(book.Title);
-                }
+                Console.WriteLine(book.Title);
             }
         }
 
-        public static void PrintResultsToFile(string directoryOfFile, List<BookModel> listOfBooks)
+        public static void PrintResultsToFile(string directoryOfFile, IReadOnlyCollection<BookModel> books)
         {
-            if (listOfBooks == null)
+            if (books == null)
             {
-                throw new ArgumentNullException(nameof(listOfBooks), "Dictiunary of books is null");
+                throw new ArgumentNullException(nameof(books), "Dictionary of books is null");
             }
 
             PathValidator.ValidationForDirectory(directoryOfFile);
-
-            StringBuilder filePath = new StringBuilder(directoryOfFile);
 
             DateTime time = DateTime.Now;
 
             string fileName = $"{time:yyyyMMdd_HHmmss}.txt";
 
-            filePath.Append(fileName);
+            string filePath = System.IO.Path.Combine(directoryOfFile, fileName);
 
-            using (FileStream fileStream = File.Create(filePath.ToString()))
+            using (FileStream fileStream = File.Create(filePath))
             {
             }
 
-            using (StreamWriter streamWriter = new StreamWriter(filePath.ToString()))
+            using (StreamWriter streamWriter = new StreamWriter(filePath))
             {
-                foreach (BookModel bookModel in listOfBooks)
+                foreach (BookModel bookModel in books)
                 {
                     streamWriter.Write(bookModel.Title);
                     streamWriter.Write(",");

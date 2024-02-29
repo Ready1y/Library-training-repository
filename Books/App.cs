@@ -1,13 +1,11 @@
 ﻿using Books.Classes;
-using Books.DbContext;
 using Books.Entities;
+using Books.Mappers;
 using Books.Models;
 using Books.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Books
 {
@@ -16,143 +14,49 @@ namespace Books
 
     public class App
     {
-        private Filter AppFilter { get; set; }
-        private LibraryRepository AppLibraryRepository { get; set; }
+        private Filter _appFilter;
+        private LibraryRepository _appLibraryRepository;
+        private FileReader _fileReader;
 
-        public App() 
+        public App(Filter filter, LibraryRepository libraryRepository, FileReader fileReader) 
         {
-            AppFilter = Startup.ServiceProvider.GetService<Filter>();
-
-            AppLibraryRepository = new LibraryRepository(Startup.ServiceProvider.GetService<LibraryContext>());
+            _appFilter = filter;
+            _appLibraryRepository = libraryRepository;
+            _fileReader = fileReader;
         }
 
         public void Run(string[] args)
         {
-            Filter AppFilter = Startup.ServiceProvider.GetService<Filter>();
+            _appLibraryRepository.DeleteDB();
+            _appLibraryRepository.CreateDB();
 
-            LibraryRepository AppLibraryRepository = new LibraryRepository(Startup.ServiceProvider.GetService<LibraryContext>());
+            string filePath = Path.GetFromArgs(args, nameof(filePath));
 
-            AppLibraryRepository.CreateDB();
-
-            string filePathOfFile = Path.GetFromArgs(args, nameof(filePathOfFile));
-
-            if (filePathOfFile == string.Empty)
+            if (filePath == string.Empty)
             {
                 Console.WriteLine("Args are empty enter file path: ");
 
-                filePathOfFile = Path.GetFromUserInput();
+                filePath = Path.GetFromUserInput();
             }
 
-            BookModel[] bookModels = FileReader.Read(filePathOfFile);
+            BookModel[] bookModels = _fileReader.Read(filePath).ToArray();
 
-            List<GenreEntity> genreEntities = new List<GenreEntity>();
-            List<AuthorEntity> authorEntities = new List<AuthorEntity>();
-            List<PublisherEntity> publisherEntities = new List<PublisherEntity>();
+            List<GenreEntity> genreEntities = BookModelsToGenreEntities.Convert(bookModels);
+            List<AuthorEntity> authorEntities = BookModelsToAuthorEntities.Convert(bookModels);
+            List<PublisherEntity> publisherEntities = BookModelsToPublisherEntities.Convert(bookModels);
 
-            foreach (BookModel bookModel in bookModels)
-            {
-                GenreEntity genreEntity = new GenreEntity();
-                AuthorEntity authorEntity = new AuthorEntity();
-                PublisherEntity publisherEntity = new PublisherEntity();
-
-                genreEntity.Id = Guid.NewGuid();
-                authorEntity.Id = Guid.NewGuid();
-                publisherEntity.Id = Guid.NewGuid();
-
-                genreEntity.Name = bookModel.Genre;
-                authorEntity.Name = bookModel.Author;
-                publisherEntity.Name = bookModel.Publisher;
-
-                genreEntity.Books = new List<BookEntity>();
-                authorEntity.Books = new List<BookEntity>();
-                publisherEntity.Books = new List<BookEntity>();
-
-                genreEntities.Add(genreEntity);
-                authorEntities.Add(authorEntity);
-                publisherEntities.Add(publisherEntity);
-            }
-
-            List<BookEntity> bookEntities = new List<BookEntity>();
-
-            foreach (BookModel bookModel in bookModels)
-            {
-                BookEntity bookEntity = bookEntities.FirstOrDefault(book => book.Title == bookModel.Title && book.Pages == bookModel.Pages && book.ReleaseDate == bookModel.ReleaseDate);
-
-                if (bookEntity == null)
-                {
-                    bookEntity = new BookEntity();
-
-                    bookEntity.Id = Guid.NewGuid();
-                    bookEntity.Title = bookModel.Title;
-                    bookEntity.Pages = bookModel.Pages;
-                    bookEntity.ReleaseDate = bookModel.ReleaseDate;
-
-                    bookEntity.Genres = new List<GenreEntity>();
-                    bookEntity.Genres.Add(genreEntities.FirstOrDefault(genre => genre.Name == bookModel.Genre));
-
-                    bookEntity.Authors = new List<AuthorEntity>();
-                    bookEntity.Authors.Add(authorEntities.FirstOrDefault(author => author.Name == bookModel.Author));
-
-                    bookEntity.Publishers = new List<PublisherEntity>();
-                    bookEntity.Publishers.Add(publisherEntities.FirstOrDefault(publisher => publisher.Name == bookModel.Publisher));
-
-                    bookEntities.Add(bookEntity);
-                }
-                else
-                {
-                    bookEntity.Genres.Add(genreEntities.FirstOrDefault(genre => genre.Name == bookModel.Genre));
-
-                    bookEntity.Authors.Add(authorEntities.FirstOrDefault(author => author.Name == bookModel.Author));
-
-                    bookEntity.Publishers.Add(publisherEntities.FirstOrDefault(publisher => publisher.Name == bookModel.Publisher));
-                }
-            }
+            List<BookEntity> bookEntities = BookModelsToBookEntities.Convert(bookModels, genreEntities, authorEntities, publisherEntities);
 
             foreach (var bookEntity in bookEntities)
             {
-                AppLibraryRepository.AddBook(bookEntity);
+                _appLibraryRepository.AddBook(bookEntity);
             }
 
-            List<BookEntity> filteredBooksEntities = AppLibraryRepository.FindBooks(AppFilter).ToList();
+            IReadOnlyList<BookEntity> filteredBooksEntities = _appLibraryRepository.FindBooks(_appFilter);
 
-            List<BookModel> result = new List<BookModel>();
+            List<BookModel> result = BookEntitiesToBookModels.Convert(filteredBooksEntities);
 
-            foreach (BookEntity bookEntity in filteredBooksEntities) 
-            {
-                BookModel bookModel = new BookModel();
-
-                bookModel.Title = bookEntity.Title;
-                bookModel.Pages = bookEntity.Pages;
-                bookModel.ReleaseDate = bookEntity.ReleaseDate;
-
-                StringBuilder genreStringBuilder = new StringBuilder();
-                foreach (GenreEntity genreEntity in bookEntity.Genres)
-                {
-                    genreStringBuilder.Append(genreEntity.Name);
-                    genreStringBuilder.Append(';');
-                }
-                bookModel.Genre = genreStringBuilder.Remove(genreStringBuilder.Length - 1, 1).ToString();
-
-                StringBuilder authorStringBuilder = new StringBuilder();
-                foreach (AuthorEntity authorEntity in bookEntity.Authors)
-                {
-                    authorStringBuilder.Append(authorEntity.Name);
-                    authorStringBuilder.Append(';');
-                }
-                bookModel.Author = authorStringBuilder.Remove(authorStringBuilder.Length - 1, 1).ToString();
-
-                StringBuilder publisherStringBuilder = new StringBuilder();
-                foreach (PublisherEntity publisherEntity in bookEntity.Publishers)
-                {
-                    publisherStringBuilder.Append(publisherEntity.Name);
-                    publisherStringBuilder.Append(';');
-                }
-                bookModel.Publisher = publisherStringBuilder.Remove(publisherStringBuilder.Length - 1, 1).ToString();
-
-                result.Add(bookModel);
-            }
-
-            string nameOfDirectory = PathIO.GetDirectoryName(filePathOfFile);
+            string nameOfDirectory = PathIO.GetDirectoryName(filePath);
 
             Printer.PrintResultInConsole(result);
             Printer.PrintResultsToFile(nameOfDirectory, result);

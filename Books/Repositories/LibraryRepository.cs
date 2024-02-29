@@ -44,19 +44,19 @@ namespace Books.Repositories
         {
             if(newBook == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(newBook), "New book is null");
             }
 
             if (newBook.Id == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("New book's id is empty", nameof(newBook));
             }
 
             if (_context.Books.Any(b => b.Title == newBook.Title && b.Pages == newBook.Pages && b.ReleaseDate == newBook.ReleaseDate))
             {
                 return;
             };
-
+                
             _context.Books.Add(newBook);
 
             _context.SaveChanges();
@@ -66,12 +66,12 @@ namespace Books.Repositories
         {
             if (newGenre == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(newGenre), "New genre is null");
             }
 
             if (newGenre.Id == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("New genre's id is empty", nameof(newGenre));
             }
 
             if (_context.Genres.Any(b => b.Name == newGenre.Name))
@@ -88,12 +88,12 @@ namespace Books.Repositories
         {
             if (newAuthor == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(newAuthor), "New author is null");
             }
 
             if (newAuthor.Id == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("New author's id is empty", nameof(newAuthor));
             }
 
             if (_context.Authors.Any(b => b.Name == newAuthor.Name))
@@ -110,12 +110,12 @@ namespace Books.Repositories
         {
             if (newPublisher == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(newPublisher), "New publisher is null");
             }
 
             if (newPublisher.Id == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("New publisher's id is empty", nameof(newPublisher));
             }
 
             if (_context.Publishers.Any(b => b.Name == newPublisher.Name))
@@ -130,9 +130,9 @@ namespace Books.Repositories
 
         public void DeleteBook(Guid idOfDeletedEntity)
         {
-            if (idOfDeletedEntity == null)
+            if (idOfDeletedEntity == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("Id is empty", nameof(idOfDeletedEntity));
             }
 
             BookEntity bookToDelete = _context.Books.Find(idOfDeletedEntity);
@@ -145,11 +145,23 @@ namespace Books.Repositories
             }
         }
 
+        public void DeleteBook(BookEntity bookToDelete)
+        {
+            if (bookToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(bookToDelete), "Book to delete is null");
+            }
+
+            _context.Books.Remove(bookToDelete);
+
+            _context.SaveChanges();
+        }
+
         public void DeleteGenre(Guid idOfDeletedEntity)
         {
-            if (idOfDeletedEntity == null)
+            if (idOfDeletedEntity == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("Id is empty", nameof(idOfDeletedEntity));
             }
 
             GenreEntity genreToDelete = _context.Genres.Find(idOfDeletedEntity);
@@ -162,11 +174,23 @@ namespace Books.Repositories
             }
         }
 
+        public void DeleteGenre(GenreEntity genreToDelete)
+        {
+            if (genreToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(genreToDelete), "Genre to delete is null");
+            }
+
+            _context.Genres.Remove(genreToDelete);
+
+            _context.SaveChanges();
+        }
+
         public void DeleteAuthor(Guid idOfDeletedEntity)
         {
-            if (idOfDeletedEntity == null)
+            if (idOfDeletedEntity == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("Id is empty", nameof(idOfDeletedEntity));
             }
 
             AuthorEntity authorToDelete = _context.Authors.Find(idOfDeletedEntity);
@@ -179,11 +203,23 @@ namespace Books.Repositories
             }
         }
 
+        public void DeleteAuthor(AuthorEntity authorToDelete)
+        {
+            if (authorToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(authorToDelete), "Author to delete is null");
+            }
+
+            _context.Authors.Remove(authorToDelete);
+
+            _context.SaveChanges();
+        }
+
         public void DeletePublisher(Guid idOfDeletedEntity)
         {
-            if (idOfDeletedEntity == null)
+            if (idOfDeletedEntity == Guid.Empty)
             {
-                return;
+                throw new ArgumentException("Id is empty", nameof(idOfDeletedEntity));
             }
 
             PublisherEntity publisherToDelete = _context.Publishers.Find(idOfDeletedEntity);
@@ -196,39 +232,51 @@ namespace Books.Repositories
             }
         }
 
+        public void DeletePublisher(PublisherEntity publisherToDelete)
+        {
+            if (publisherToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(publisherToDelete), "Publisher to delete is null");
+            }
+
+            _context.Publishers.Remove(publisherToDelete);
+
+            _context.SaveChanges();
+        }
+
         public IReadOnlyList<BookEntity> GetAllBooks()
         {
-            IReadOnlyList<BookEntity> books =_context.Books.ToList();
+            IReadOnlyList<BookEntity> books =_context.Books.ToArray();
 
             return books;
         }
 
         public IReadOnlyList<GenreEntity> GetAllGenres()
         {
-            IReadOnlyList<GenreEntity> genres = _context.Genres.ToList();
+            IReadOnlyList<GenreEntity> genres = _context.Genres.ToArray();
 
             return genres;
         }
 
         public IReadOnlyList<AuthorEntity> GetAllAuthors()
         {
-            IReadOnlyList<AuthorEntity> authors = _context.Authors.ToList();
+            IReadOnlyList<AuthorEntity> authors = _context.Authors.ToArray();
 
             return authors;
         }
 
         public IReadOnlyList<PublisherEntity> GetAllPublishers()
         {
-            IReadOnlyList<PublisherEntity> publishers = _context.Publishers.ToList();
+            IReadOnlyList<PublisherEntity> publishers = _context.Publishers.ToArray();
 
             return publishers;
         }
 
         public BookEntity GetBookById(Guid idOfFindedEntity)
         {
-            if (idOfFindedEntity == null)
+            if (idOfFindedEntity == Guid.Empty)
             {
-                return null;
+                throw new ArgumentException("Id is empty", nameof(idOfFindedEntity));
             }
 
             BookEntity findedBook = _context.Books.Find(idOfFindedEntity);
@@ -238,9 +286,9 @@ namespace Books.Repositories
 
         public GenreEntity GetGenreById(Guid idOfFindedEntity)
         {
-            if (idOfFindedEntity == null)
+            if (idOfFindedEntity == Guid.Empty)
             {
-                return null;
+                throw new ArgumentException("Id is empty", nameof(idOfFindedEntity));
             }
 
             GenreEntity findedGenre = _context.Genres.Find(idOfFindedEntity);
@@ -250,9 +298,9 @@ namespace Books.Repositories
 
         public AuthorEntity GetAuthorById(Guid idOfFindedEntity)
         {
-            if (idOfFindedEntity == null)
+            if (idOfFindedEntity == Guid.Empty)
             {
-                return null;
+                throw new ArgumentException("Id is empty", nameof(idOfFindedEntity));
             }
 
             AuthorEntity findedAuthor = _context.Authors.Find(idOfFindedEntity);
@@ -262,9 +310,9 @@ namespace Books.Repositories
 
         public PublisherEntity GetPublisherById(Guid idOfFindedEntity)
         {
-            if (idOfFindedEntity == null)
+            if (idOfFindedEntity == Guid.Empty)
             {
-                return null;
+                throw new ArgumentException("Id is empty", nameof(idOfFindedEntity));
             }
 
             PublisherEntity findedPublisher = _context.Publishers.Find(idOfFindedEntity);
@@ -274,6 +322,11 @@ namespace Books.Repositories
 
         public void UpdateBook(BookEntity newBookEntity)
         {
+            if(newBookEntity == null)
+            {
+                throw new ArgumentNullException(nameof(newBookEntity), "New book entity is null");
+            }
+
             BookEntity bookToUpdate = _context.Books.Find(newBookEntity.Id);
 
             if(bookToUpdate != null)
@@ -289,6 +342,11 @@ namespace Books.Repositories
 
         public void UpdateAuthor(AuthorEntity newAuthorEntity)
         {
+            if (newAuthorEntity == null)
+            {
+                throw new ArgumentNullException(nameof(newAuthorEntity), "New author entity is null");
+            }
+
             AuthorEntity authorToUpdate = _context.Authors.Find(newAuthorEntity.Id);
 
             if (authorToUpdate != null)
@@ -300,6 +358,11 @@ namespace Books.Repositories
 
         public void UpdateGenre(GenreEntity newGenreEntity)
         {
+            if (newGenreEntity == null)
+            {
+                throw new ArgumentNullException(nameof(newGenreEntity), "New genre entity is null");
+            }
+
             GenreEntity genreToUpdate = _context.Genres.Find(newGenreEntity.Id);
 
             if (genreToUpdate != null)
@@ -311,6 +374,11 @@ namespace Books.Repositories
 
         public void UpdatePublisher(PublisherEntity newPublisherEntity)
         {
+            if (newPublisherEntity == null)
+            {
+                throw new ArgumentNullException(nameof(newPublisherEntity), "New publisher entity is null");
+            }
+
             PublisherEntity publisherToUpdate = _context.Publishers.Find(newPublisherEntity.Id);
 
             if (publisherToUpdate != null)
@@ -320,52 +388,67 @@ namespace Books.Repositories
             }
         }
 
-        public IReadOnlyList<BookEntity> FindBooks(Predicate<BookEntity> predicate)
+        public IReadOnlyList<BookEntity> FindBooks(Func<BookEntity, bool> predicate)
         {
-            return _context.Books.AsEnumerable().Where(book => predicate(book)).ToList().AsReadOnly();
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate), "Predicate is null");
+            }
+
+            return _context.Books.AsEnumerable().Where(predicate).ToArray();
         }
 
-        public IReadOnlyList<GenreEntity> FindGenres(Predicate<GenreEntity> predicate)
+        public IReadOnlyList<GenreEntity> FindGenres(Func<GenreEntity, bool> predicate)
         {
-            return _context.Genres.AsEnumerable().Where(genre => predicate(genre)).ToList().AsReadOnly();
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate), "Predicate is null");
+            }
+
+            return _context.Genres.AsEnumerable().Where(predicate).ToArray();
         }
 
-        public IReadOnlyList<AuthorEntity> FindAuthors(Predicate<AuthorEntity> predicate)
+        public IReadOnlyList<AuthorEntity> FindAuthors(Func<AuthorEntity, bool> predicate)
         {
-            return _context.Authors.AsEnumerable().Where(author => predicate(author)).ToList().AsReadOnly();
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate), "Predicate is null");
+            }
+
+            return _context.Authors.AsEnumerable().Where(predicate).ToArray();
         }
 
-        public IReadOnlyList<PublisherEntity> FindPublishers(Predicate<PublisherEntity> predicate)
+        public IReadOnlyList<PublisherEntity> FindPublishers(Func<PublisherEntity, bool> predicate)
         {
             if(predicate == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(predicate), "Predicate is null");
             }
 
-            return _context.Publishers.AsEnumerable().Where(publisher => predicate(publisher)).ToList().AsReadOnly();
+            return _context.Publishers.AsEnumerable().Where(predicate).ToArray();
         }
 
         public IReadOnlyList<BookEntity> FindBooks(Filter filter)
         {
             if (filter == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(filter), "Filter is null");
             }
 
             GenreEntity genreEntity = null;
-            if(filter.Genre != null && filter.Genre != string.Empty)
+            if(!string.IsNullOrEmpty(filter.Genre))
             {
                 genreEntity = _context.Genres.FirstOrDefault(genre => genre.Name == filter.Genre); 
             }
 
             AuthorEntity authorEntity = null;
-            if (filter.Author != null && filter.Author != string.Empty)
+            if (!string.IsNullOrEmpty(filter.Author))
             {
                 authorEntity = _context.Authors.FirstOrDefault(author => author.Name == filter.Author);
             }
 
             PublisherEntity publisherEntity = null;
-            if (filter.Publisher != null && filter.Publisher != string.Empty)
+            if (!string.IsNullOrEmpty(filter.Publisher))
             {
                 publisherEntity = _context.Publishers.FirstOrDefault(publisher => publisher.Name == filter.Publisher);
             }
@@ -394,8 +477,10 @@ namespace Books.Repositories
                     && (filter.MoreThanPages == null || book.Pages > filter.MoreThanPages)
                     && (filter.LessThanPages == null || book.Pages < filter.LessThanPages)
                     && (filter.PublishedBefore == null || filter.PublishedBefore == DateTime.MinValue || DateTime.Compare(publishedBeforeNotNull.ToUniversalTime(), book.ReleaseDate) > 0)
-                    && (filter.PublishedAfter == null || filter.PublishedAfter == DateTime.MinValue || DateTime.Compare(publishedAfterNotNull.ToUniversalTime(), book.ReleaseDate) < 0))
-                    .ToList().AsReadOnly();
+                    && (filter.PublishedAfter == null || filter.PublishedAfter == DateTime.MinValue || DateTime.Compare(publishedAfterNotNull.ToUniversalTime(), book.ReleaseDate) < 0)
+                    )
+                    .ToArray()
+                ;
         }
     }
 }

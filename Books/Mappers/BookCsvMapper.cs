@@ -1,7 +1,9 @@
-﻿using Books.Models;
+﻿using System;
+using Books.Classes;
+using Books.Models;
 using CsvHelper.Configuration;
 
-namespace Books.Classes
+namespace Books.Mappers
 {
     public class BookCsvMapper : ClassMap<BookModel>
     {
