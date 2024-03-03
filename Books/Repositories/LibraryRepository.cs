@@ -10,7 +10,7 @@ namespace Books.Repositories
 {
     public class LibraryRepository
     {
-        private LibraryContext _context;
+        private readonly LibraryContext _context;
 
         public LibraryRepository(LibraryContext context)
         {
@@ -435,52 +435,44 @@ namespace Books.Repositories
                 throw new ArgumentNullException(nameof(filter), "Filter is null");
             }
 
-            GenreEntity genreEntity = null;
-            if(!string.IsNullOrEmpty(filter.Genre))
-            {
-                genreEntity = _context.Genres.FirstOrDefault(genre => genre.Name == filter.Genre); 
-            }
+            GenreEntity genreEntity = string.IsNullOrEmpty(filter.Genre)
+                ? null
+                : _context.Genres.FirstOrDefault(genre => genre.Name == filter.Genre)
+            ;
 
-            AuthorEntity authorEntity = null;
-            if (!string.IsNullOrEmpty(filter.Author))
-            {
-                authorEntity = _context.Authors.FirstOrDefault(author => author.Name == filter.Author);
-            }
 
-            PublisherEntity publisherEntity = null;
-            if (!string.IsNullOrEmpty(filter.Publisher))
-            {
-                publisherEntity = _context.Publishers.FirstOrDefault(publisher => publisher.Name == filter.Publisher);
-            }
+            AuthorEntity authorEntity = string.IsNullOrEmpty(filter.Author)
+                ? null
+                : _context.Authors.FirstOrDefault(author => author.Name == filter.Author)
+            ;
 
-            DateTime publishedBeforeNotNull = DateTime.MinValue;
-            if(filter.PublishedBefore != null)
-            {
-                publishedBeforeNotNull = filter.PublishedBefore.Value;
-            }
 
-            DateTime publishedAfterNotNull = DateTime.MinValue;
-            if (filter.PublishedAfter != null)
-            {
-                publishedAfterNotNull = filter.PublishedAfter.Value;
-            }
+            PublisherEntity publisherEntity = string.IsNullOrEmpty(filter.Publisher)
+                ? null
+                : publisherEntity = _context.Publishers.FirstOrDefault(publisher => publisher.Name == filter.Publisher)
+            ;
+
+
+            DateTime publishedBeforeNotNull = filter.PublishedBefore ?? DateTime.MinValue;
+
+            DateTime publishedAfterNotNull = filter.PublishedAfter ?? DateTime.MinValue;
 
             return _context.Books
                 .Include(book => book.Authors)
                 .Include(book => book.Genres)
                 .Include(book => book.Publishers)
                 .Where(book =>
-                    (filter.Title == null || filter.Title == string.Empty || book.Title == filter.Title)
-                    && (filter.Genre == null || filter.Genre == string.Empty || book.Genres.Contains(genreEntity))
-                    && (filter.Author == null || filter.Author == string.Empty || book.Authors.Contains(authorEntity))
-                    && (filter.Publisher == null || filter.Publisher == string.Empty || book.Publishers.Contains(publisherEntity))
+                    (string.IsNullOrEmpty(filter.Title) || book.Title == filter.Title)
+                    && (string.IsNullOrEmpty(filter.Genre) || book.Genres.Contains(genreEntity))
+                    && (string.IsNullOrEmpty(filter.Author) || book.Authors.Contains(authorEntity))
+                    && (string.IsNullOrEmpty(filter.Publisher) || book.Publishers.Contains(publisherEntity))
                     && (filter.MoreThanPages == null || book.Pages > filter.MoreThanPages)
                     && (filter.LessThanPages == null || book.Pages < filter.LessThanPages)
                     && (filter.PublishedBefore == null || filter.PublishedBefore == DateTime.MinValue || DateTime.Compare(publishedBeforeNotNull.ToUniversalTime(), book.ReleaseDate) > 0)
                     && (filter.PublishedAfter == null || filter.PublishedAfter == DateTime.MinValue || DateTime.Compare(publishedAfterNotNull.ToUniversalTime(), book.ReleaseDate) < 0)
-                    )
-                    .ToArray()
-                ;
+                )
+                .ToArray()
+            ;
         }
     }
 }

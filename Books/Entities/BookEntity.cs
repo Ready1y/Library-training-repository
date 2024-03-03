@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 
 namespace Books.Entities
@@ -14,13 +14,27 @@ namespace Books.Entities
         public ICollection<PublisherEntity> Publishers { get; set; }
         public ICollection<GenreEntity> Genres { get; set; }
 
+        public bool Equals(BookEntity bookEntity)
+        {
+            if (bookEntity == null)
+            {
+                return false;
+            }
+
+            return Id.Equals(bookEntity.Id) &&
+                    Title == bookEntity.Title &&
+                    Pages == bookEntity.Pages &&
+                    ReleaseDate == bookEntity.ReleaseDate;
+        }
+
         public override bool Equals(object obj)
         {
-            return obj is BookEntity entity &&
-                   Id.Equals(entity.Id) &&
-                   Title == entity.Title &&
-                   Pages == entity.Pages &&
-                   ReleaseDate == entity.ReleaseDate;
+            if (obj == null || !(obj is BookEntity))
+            {
+                return false;
+            }
+
+            return Equals((BookEntity)obj);
         }
 
         public override int GetHashCode()

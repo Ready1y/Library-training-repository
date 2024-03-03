@@ -10,11 +10,25 @@ namespace Books.Entities
 
         public ICollection<BookEntity> Books { get; set; }
 
+        public bool Equals(AuthorEntity authorEntity)
+        {
+            if(authorEntity == null)
+            {
+                return false;
+            }
+
+            return Id.Equals(authorEntity.Id) &&
+                    Name == authorEntity.Name;
+        }
+
         public override bool Equals(object obj)
         {
-            return obj is AuthorEntity entity &&
-                   Id.Equals(entity.Id) &&
-                   Name == entity.Name;
+            if (obj == null || !(obj is AuthorEntity))
+            {
+                return false;
+            }
+
+            return Equals((AuthorEntity)obj);
         }
 
         public override int GetHashCode()
