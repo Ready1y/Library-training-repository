@@ -56,7 +56,7 @@ namespace Books.Mappers
             return bookEntities;
         }
 
-        public static List<BookModel> GetModels(IReadOnlyList<BookEntity> bookEntities)
+        public static IReadOnlyList<BookModel> GetModels(IReadOnlyList<BookEntity> bookEntities)
         {
             if (bookEntities == null)
             {
@@ -77,6 +77,11 @@ namespace Books.Mappers
 
         private static BookModel GetModel(BookEntity bookEntity)
         {
+            if(bookEntity == null)
+            {
+                throw new ArgumentNullException(nameof(bookEntity), "Book entity is null");
+            }
+
             BookModel bookModel = new BookModel();
 
             bookModel.Title = bookEntity.Title;

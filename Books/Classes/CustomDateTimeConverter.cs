@@ -10,7 +10,7 @@ namespace Books.Classes
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
             if(memberMapData == null)
-            {
+            {   
                 throw new ArgumentNullException(nameof(memberMapData), "Member map data is null");
             }
 

@@ -1,11 +1,7 @@
 ﻿using Books.Classes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -16,7 +12,7 @@ namespace Books.Tests.UnitTesting.MSTests
         [DataRow(null)]
         [DataRow("")]
         [DataRow("          ")]
-        public void Test_ValidationForFile_WhenInputFilePathIsNull_ThrowsArgumentNullException(string wrongPath)
+        public void Test_ValidationForFile_WhenInputFilePathIsNullOrEmpty_ThrowsArgumentNullException(string wrongPath)
         {
             Action action = () => PathValidator.ValidationForFile(wrongPath);
 
@@ -57,7 +53,7 @@ namespace Books.Tests.UnitTesting.MSTests
         [DataRow(null)]
         [DataRow("")]
         [DataRow("          ")]
-        public void Test_ValidationForDirectory_WhenInputFilePathIsNull_ThrowsArgumentNullException(string wrongPath)
+        public void Test_ValidationForDirectory_WhenInputFilePathIsNullOrEmpty_ThrowsArgumentNullException(string wrongPath)
         {
             Action action = () => PathValidator.ValidationForDirectory(wrongPath);
 

@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -11,95 +10,61 @@ namespace Books.Tests.UnitTesting.MSTests
     public class BookEntityTests
     {
         [TestMethod]
-        public void Test_Constructor_WhenInputIsSevenParameters_ReturnsAuthorObject()
-        {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
-
-            Assert.AreEqual(expectedIds, book.Id);
-            Assert.AreEqual(expectedTitle, book.Title);
-            Assert.AreEqual(expectedPages, book.Pages);
-            Assert.AreEqual(expectedIds, book.GenreId);
-            Assert.AreEqual(expectedIds, book.AuthorId);
-            Assert.AreEqual(expectedIds, book.PublisherId);
-            Assert.AreEqual(expectedReleasedDate, book.ReleaseDate);
-        }
-
-        [TestMethod]
         public void Test_GetId_ReturnsId()
         {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            Guid expectedId = new Guid();
 
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { Id = expectedId };
 
             Guid actualId = book.Id;
 
-            Assert.AreEqual(expectedIds, actualId);
+            Assert.AreEqual(expectedId, actualId);
         }
 
         [TestMethod]
         public void Test_SetId_SetValueToId()
         {
             Guid startId = Guid.Empty;
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            Guid expectedId = new Guid();
 
-            BookEntity book = new BookEntity(startId, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { Id = startId };
 
-            book.Id = expectedIds;
+            book.Id = expectedId;
 
-            Assert.AreEqual(expectedIds, book.Id);
+            Assert.AreEqual(expectedId, book.Id);
         }
 
         [TestMethod]
         public void Test_GetTitle_ReturnsTitle()
         {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            const string expectedName = "Book";
 
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { Title = expectedName };
 
-            string actualTitle = book.Title;
+            string actualName = book.Title;
 
-            Assert.AreEqual(expectedTitle, actualTitle);
+            Assert.AreEqual(expectedName, actualName);
         }
 
         [TestMethod]
         public void Test_SetTitle_SetValueToTitle()
         {
-            const string startTitle = "name";
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            const string startName = "name";
+            const string expectedName = "Book";
 
-            BookEntity book = new BookEntity(expectedIds, startTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { Title = startName };
 
-            book.Title = expectedTitle;
+            book.Title = expectedName;
 
-            Assert.AreEqual(expectedTitle, book.Title);
+            Assert.AreEqual(expectedName, book.Title);
         }
 
         [TestMethod]
         public void Test_GetPages_ReturnsPages()
         {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            const int expectedPages = 100;
 
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { Pages = expectedPages };
 
             int actualPages = book.Pages;
 
@@ -109,13 +74,10 @@ namespace Books.Tests.UnitTesting.MSTests
         [TestMethod]
         public void Test_SetPages_SetValueToPages()
         {
-            const int startPages = 1;
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            const int startPages = 10;
+            const int expectedPages = 100;
 
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, startPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { Pages = startPages };
 
             book.Pages = expectedPages;
 
@@ -123,127 +85,215 @@ namespace Books.Tests.UnitTesting.MSTests
         }
 
         [TestMethod]
-        public void Test_GetGenreId_ReturnsGenreId()
-        {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
-
-            Guid actualGenreId = book.GenreId;
-
-            Assert.AreEqual(expectedIds, actualGenreId);
-        }
-
-        [TestMethod]
-        public void Test_SetGenreId_SetValueToGenreId()
-        {
-            Guid startId = Guid.Empty;
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, startId, expectedIds, expectedIds, expectedReleasedDate);
-
-            book.GenreId = expectedIds;
-
-            Assert.AreEqual(expectedIds, book.GenreId);
-        }
-
-        [TestMethod]
-        public void Test_GetAuthorId_ReturnsAuthorId()
-        {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
-
-            Guid actualAuthorId = book.AuthorId;
-
-            Assert.AreEqual(expectedIds, actualAuthorId);
-        }
-
-        [TestMethod]
-        public void Test_SetAuthorId_SetValueToAuthorId()
-        {
-            Guid startId = Guid.Empty;
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, startId, expectedIds, expectedReleasedDate);
-
-            book.AuthorId = expectedIds;
-
-            Assert.AreEqual(expectedIds, book.AuthorId);
-        }
-
-        [TestMethod]
-        public void Test_GetPublisherId_ReturnsPublisherId()
-        {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
-
-            Guid actualPublisherId = book.PublisherId;
-
-            Assert.AreEqual(expectedIds, actualPublisherId);
-        }
-
-        [TestMethod]
-        public void Test_SetPublisherId_SetValueToPublisherId()
-        {
-            Guid startId = Guid.Empty;
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
-
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, startId, expectedReleasedDate);
-
-            book.PublisherId = expectedIds;
-
-            Assert.AreEqual(expectedIds, book.PublisherId);
-        }
-
-        [TestMethod]
         public void Test_GetReleaseDate_ReturnsReleaseDate()
         {
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            DateTime expectedReleaseDate = DateTime.MaxValue;
 
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, expectedReleasedDate);
+            BookEntity book = new BookEntity() { ReleaseDate = expectedReleaseDate };
 
-            DateTime actualPublisherId = book.ReleaseDate;
+            DateTime actualReleaseDate = book.ReleaseDate;
 
-            Assert.AreEqual(expectedReleasedDate, actualPublisherId);
+            Assert.AreEqual(expectedReleaseDate, actualReleaseDate);
         }
 
         [TestMethod]
         public void Test_SetReleaseDate_SetValueToReleaseDate()
         {
-            DateTime startReleaseDate = DateTime.MaxValue;
-            const string expectedTitle = "Book";
-            Guid expectedIds = Guid.NewGuid();
-            const int expectedPages = 2;
-            DateTime expectedReleasedDate = DateTime.MinValue;
+            DateTime startReleaseDate = DateTime.MinValue;
+            DateTime expectedReleaseDate = DateTime.MaxValue;
 
-            BookEntity book = new BookEntity(expectedIds, expectedTitle, expectedPages, expectedIds, expectedIds, expectedIds, startReleaseDate);
+            BookEntity book = new BookEntity() { ReleaseDate = startReleaseDate };
 
-            book.ReleaseDate = expectedReleasedDate;
+            book.ReleaseDate = expectedReleaseDate;
 
-            Assert.AreEqual(expectedReleasedDate, book.ReleaseDate);
+            Assert.AreEqual(expectedReleaseDate, book.ReleaseDate);
+        }
+
+        [TestMethod]
+        public void Test_GetAuthors_ReturnsAuthors()
+        {
+            List<AuthorEntity> expectedAuthorEntities = new List<AuthorEntity>();
+            expectedAuthorEntities.Add(new AuthorEntity() { Id = Guid.NewGuid() });
+            expectedAuthorEntities.Add(new AuthorEntity() { Id = Guid.NewGuid() });
+
+            BookEntity book = new BookEntity();
+            book.Authors = expectedAuthorEntities;
+
+            List<AuthorEntity> actualAuthorEntities = new List<AuthorEntity>();
+
+            actualAuthorEntities = book.Authors.ToList();
+
+            foreach (AuthorEntity authorEntity in actualAuthorEntities)
+            {
+                Assert.IsTrue(expectedAuthorEntities.Contains(authorEntity));
+            }
+        }
+
+        [TestMethod]
+        public void Test_SetAuthors_SetValueToAuthors()
+        {
+            List<AuthorEntity> expectedAuthorEntities = new List<AuthorEntity>();
+            expectedAuthorEntities.Add(new AuthorEntity() { Id = Guid.NewGuid() });
+            expectedAuthorEntities.Add(new AuthorEntity() { Id = Guid.NewGuid() });
+
+            BookEntity book = new BookEntity();
+            book.Authors = expectedAuthorEntities;
+
+            foreach (AuthorEntity authorEntity in book.Authors)
+            {
+                Assert.IsTrue(expectedAuthorEntities.Contains(authorEntity));
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetGenres_ReturnsGenres()
+        {
+            List<GenreEntity> expectedGenreEntities = new List<GenreEntity>();
+            expectedGenreEntities.Add(new GenreEntity() { Id = Guid.NewGuid() });
+            expectedGenreEntities.Add(new GenreEntity() { Id = Guid.NewGuid() });
+
+            BookEntity book = new BookEntity();
+            book.Genres = expectedGenreEntities;
+
+            List<GenreEntity> actualGenreEntities = new List<GenreEntity>();
+
+            actualGenreEntities = book.Genres.ToList();
+
+            foreach (GenreEntity genreEntity in actualGenreEntities)
+            {
+                Assert.IsTrue(expectedGenreEntities.Contains(genreEntity));
+            }
+        }
+
+        [TestMethod]
+        public void Test_SetGenres_SetValueToGenres()
+        {
+            List<GenreEntity> expectedGenreEntities = new List<GenreEntity>();
+            expectedGenreEntities.Add(new GenreEntity() { Id = Guid.NewGuid() });
+            expectedGenreEntities.Add(new GenreEntity() { Id = Guid.NewGuid() });
+
+            BookEntity book = new BookEntity();
+            book.Genres = expectedGenreEntities;
+
+            foreach (GenreEntity genreEntity in book.Genres)
+            {
+                Assert.IsTrue(expectedGenreEntities.Contains(genreEntity));
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetPublishers_ReturnsPublishers()
+        {
+            List<PublisherEntity> expectedPublisherEntities = new List<PublisherEntity>();
+            expectedPublisherEntities.Add(new PublisherEntity() { Id = Guid.NewGuid() });
+            expectedPublisherEntities.Add(new PublisherEntity() { Id = Guid.NewGuid() });
+
+            BookEntity book = new BookEntity();
+            book.Publishers = expectedPublisherEntities;
+
+            List<PublisherEntity> actualPublisherEntities = new List<PublisherEntity>();
+
+            actualPublisherEntities = book.Publishers.ToList();
+
+            foreach (PublisherEntity publisherEntity in actualPublisherEntities)
+            {
+                Assert.IsTrue(expectedPublisherEntities.Contains(publisherEntity));
+            }
+        }
+
+        [TestMethod]
+        public void Test_SetPublishers_SetValueToPublishers()
+        {
+            List<PublisherEntity> expectedPublisherEntities = new List<PublisherEntity>();
+            expectedPublisherEntities.Add(new PublisherEntity() { Id = Guid.NewGuid() });
+            expectedPublisherEntities.Add(new PublisherEntity() { Id = Guid.NewGuid() });
+
+            BookEntity book = new BookEntity();
+            book.Publishers = expectedPublisherEntities;
+
+            foreach (PublisherEntity publisherEntity in book.Publishers)
+            {
+                Assert.IsTrue(expectedPublisherEntities.Contains(publisherEntity));
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetHashCode_WhenInputIsSameObjects_ReturnsSameValue()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = new BookEntity { Id = book1.Id, Title = book1.Title, Pages = book1.Pages, ReleaseDate = book1.ReleaseDate };
+
+            int hashCode1 = book1.GetHashCode();
+            int hashCode2 = book2.GetHashCode();
+
+            Assert.AreEqual(hashCode1, hashCode2);
+        }
+
+        [TestMethod]
+        public void Test_GetHashCode_WhenInputIsDifferentObjects_ReturnsDifferentValue()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book1", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = new BookEntity { Id = Guid.NewGuid(), Title = "Book2", Pages = 321, ReleaseDate = DateTime.MaxValue };
+
+            int hashCode1 = book1.GetHashCode();
+            int hashCode2 = book2.GetHashCode();
+
+            Assert.AreNotEqual(hashCode1, hashCode2);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsEqualObject_ReturnsTrue()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book1", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = new BookEntity { Id = book1.Id, Title = book1.Title, Pages = book1.Pages, ReleaseDate = book1.ReleaseDate };
+
+            bool result = book1.Equals((object)book2);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsDifferentObjects_ReturnsFalse()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book1", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = new BookEntity { Id = Guid.NewGuid(), Title = "Book2", Pages = 321, ReleaseDate = DateTime.MaxValue };
+
+            bool result = book1.Equals((object)book2);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsEqualBookEntities_ReturnsTrue()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book1", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = new BookEntity { Id = book1.Id, Title = book1.Title, Pages = book1.Pages, ReleaseDate = book1.ReleaseDate };
+
+            bool result = book1.Equals(book2);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsDifferentBookEntities_ReturnsFalse()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book1", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = new BookEntity { Id = Guid.NewGuid(), Title = "Book2", Pages = 321, ReleaseDate = DateTime.MaxValue };
+
+            bool result = book1.Equals(book2);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsNull_ReturnsFalse()
+        {
+            BookEntity book1 = new BookEntity { Id = Guid.NewGuid(), Title = "Book1", Pages = 123, ReleaseDate = DateTime.MinValue };
+            BookEntity book2 = null;
+
+            bool result = book1.Equals(book2);
+
+            Assert.IsFalse(result);
         }
     }
 }

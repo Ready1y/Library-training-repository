@@ -1,14 +1,24 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Books.Entities
 {
     public class BookEntity
     {
+        private DateTime _releaseDate;
+
         public Guid Id { get; set; }
         public string Title { get; set; }
         public int Pages { get; set; }
-        public DateTime ReleaseDate { get; set; }
+
+        public DateTime ReleaseDate 
+        {
+            get => _releaseDate;
+            set
+            {
+                _releaseDate = TimeZoneInfo.ConvertTimeToUtc(value, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
+            }
+        }
 
         public ICollection<AuthorEntity> Authors { get; set; }
         public ICollection<PublisherEntity> Publishers { get; set; }

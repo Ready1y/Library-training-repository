@@ -1,5 +1,6 @@
 ﻿using Books.Classes;
 using Books.DbContext;
+using Books.Interfaces;
 using Books.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,7 @@ namespace Books
 
             services.AddDbContext<LibraryContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
             services.AddSingleton<Filter>(configuration.GetSection("FilterSettings").Get<Filter>());
-            services.AddScoped<LibraryRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
             services.AddScoped<FileReader>();
             services.AddSingleton<App>();
 

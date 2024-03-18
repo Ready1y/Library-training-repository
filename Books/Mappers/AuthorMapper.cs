@@ -7,7 +7,7 @@ namespace Books.Mappers
 {
     public static class AuthorMapper
     {
-        public static List<AuthorEntity> GetEntities(IReadOnlyList<BookModel> bookModels)
+        public static IReadOnlyList<AuthorEntity> GetEntities(IReadOnlyList<BookModel> bookModels)
         {
             if (bookModels == null)
             {

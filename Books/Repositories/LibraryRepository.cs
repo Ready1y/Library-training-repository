@@ -4,11 +4,12 @@ using System.Linq;
 using Books.Classes;
 using Books.DbContext;
 using Books.Entities;
+using Books.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Repositories
 {
-    public class LibraryRepository
+    public class LibraryRepository : ILibraryRepository
     {
         private readonly LibraryContext _context;
 
@@ -337,6 +338,11 @@ namespace Books.Repositories
                 bookToUpdate.Authors = newBookEntity.Authors;
                 bookToUpdate.Publishers = newBookEntity.Publishers;
                 bookToUpdate.Genres = newBookEntity.Genres;
+
+                _context.Books.Remove(bookToUpdate);
+                _context.Books.Add(bookToUpdate);
+
+                _context.SaveChanges();
             }
         }
 

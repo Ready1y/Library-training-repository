@@ -1,8 +1,8 @@
 ﻿using Books.Classes;
 using Books.Entities;
+using Books.Interfaces;
 using Books.Mappers;
 using Books.Models;
-using Books.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +15,10 @@ namespace Books
     public class App
     {
         private readonly Filter _appFilter;
-        private readonly LibraryRepository _appLibraryRepository;
+        private readonly ILibraryRepository _appLibraryRepository;
         private readonly FileReader _fileReader;
 
-        public App(Filter filter, LibraryRepository libraryRepository, FileReader fileReader) 
+        public App(Filter filter, ILibraryRepository libraryRepository, FileReader fileReader) 
         {
             if(filter == null)
             {
@@ -67,7 +67,7 @@ namespace Books
 
             IReadOnlyList<BookEntity> filteredBooksEntities = _appLibraryRepository.FindBooks(_appFilter);
 
-            List<BookModel> result = BookMapper.GetModels(filteredBooksEntities);
+            List<BookModel> result = BookMapper.GetModels(filteredBooksEntities).ToList();
 
             string nameOfDirectory = PathIO.GetDirectoryName(filePath);
 

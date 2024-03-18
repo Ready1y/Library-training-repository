@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System;
 using Books.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -10,13 +12,23 @@ namespace Books.Tests.UnitTesting.MSTests
     public class FileReaderTests
     {
         [TestMethod]
-        public void Test_Read_WhenInputFileIsEmpty_ReturnNull()
+        public void Test_Constructor_WhenFilterIsNull_ThrowsArgumentNullException()
         {
-            const string InputPath = "./Files/EmptyFile.txt";
+            Filter filter = null;
 
-            BookModel[] info = FileReader.Read(InputPath);
+            Action action = () => new FileReader(filter);
+            
+            Assert.ThrowsException<ArgumentNullException>(action);
+        }
 
-            Assert.IsNull(info);
+        [TestMethod]
+        public void Test_Constructor_WhenInputIsCorrect_CreateFilereaderObject()
+        {
+            Filter filter = new Filter();
+
+            FileReader fileReader = new FileReader(filter);
+
+            Assert.IsNotNull(fileReader);
         }
 
         [TestMethod]
@@ -29,19 +41,16 @@ namespace Books.Tests.UnitTesting.MSTests
             BookModel book3 = new BookModel("The Great Gatsby", 180, "Classics", "F. Scott Fitzgerald", "Scribner", new DateTime(1925, 04, 10));
             BookModel book4 = new BookModel("Pride and Prejudice", 432, "Romance", "Jane Austen", "Penguin Classics", new DateTime(1813, 01, 28));
 
-            BookModel[] expectedBooks = { book1, book2, book3, book4 };
+            List<BookModel> expectedBooks = new List<BookModel>{ book1, book2, book3, book4 };
 
-            BookModel[] actualBooks = FileReader.Read(InputPath);
+            Filter filter = new Filter();
+            FileReader fileReader = new FileReader(filter);
 
-            for (int i = 0; i < actualBooks.Length; i++)
-            {
-                Assert.AreEqual(expectedBooks[i].Title, actualBooks[i].Title);
-                Assert.AreEqual(expectedBooks[i].Pages, actualBooks[i].Pages);
-                Assert.AreEqual(expectedBooks[i].Genre, actualBooks[i].Genre);
-                Assert.AreEqual(expectedBooks[i].Author, actualBooks[i].Author);
-                Assert.AreEqual(expectedBooks[i].Publisher, actualBooks[i].Publisher);
-                Assert.AreEqual(expectedBooks[i].ReleaseDate, actualBooks[i].ReleaseDate);
-            }
+            List<BookModel> actualBooks = fileReader.Read(InputPath).ToList();
+
+            List<BookModel> result = expectedBooks.Except(actualBooks).ToList();
+
+            Assert.AreEqual(result.Count, 0);
         }
 
         [TestMethod]
@@ -49,7 +58,10 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             const string WrongPath = null;
 
-            Action action = () => FileReader.Read(WrongPath);
+            Filter filter = new Filter();
+            FileReader fileReader = new FileReader(filter);
+
+            Action action = () => fileReader.Read(WrongPath);
 
             Assert.ThrowsException<ArgumentException>(action);
         }
@@ -59,7 +71,10 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             const string WrongPath = ".|Files|InputFile.txt";
 
-            Action action = () => FileReader.Read(WrongPath);
+            Filter filter = new Filter();
+            FileReader fileReader = new FileReader(filter);
+
+            Action action = () => fileReader.Read(WrongPath);
 
             Assert.ThrowsException<ArgumentException>(action);
         }
@@ -69,7 +84,10 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             const string WrongPath = "./Filsssss/InputFile.txt";
 
-            Action action = () => FileReader.Read(WrongPath);
+            Filter filter = new Filter();
+            FileReader fileReader = new FileReader(filter);
+
+            Action action = () => fileReader.Read(WrongPath);
 
             Assert.ThrowsException<DirectoryNotFoundException>(action);
         }
@@ -79,7 +97,10 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             const string WrongPath = "./Files/File123.txt";
 
-            Action action = () => FileReader.Read(WrongPath);
+            Filter filter = new Filter();
+            FileReader fileReader = new FileReader(filter);
+
+            Action action = () => fileReader.Read(WrongPath);
 
             Assert.ThrowsException<FileNotFoundException>(action);
         }

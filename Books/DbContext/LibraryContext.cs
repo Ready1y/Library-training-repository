@@ -8,10 +8,10 @@ namespace Books.DbContext
 
     public class LibraryContext : DbContext
     {
-        public DbSet<BookEntity> Books { get; set; }
-        public DbSet<GenreEntity> Genres { get; set; }
-        public DbSet<AuthorEntity> Authors { get; set; }
-        public DbSet<PublisherEntity> Publishers { get; set; }
+        public virtual DbSet<BookEntity> Books { get; set; }
+        public virtual DbSet<GenreEntity> Genres { get; set; }
+        public virtual DbSet<AuthorEntity> Authors { get; set; }
+        public virtual DbSet<PublisherEntity> Publishers { get; set; }
 
         public LibraryContext(DbContextOptions<LibraryContext> options) 
             : base(options)
@@ -20,6 +20,10 @@ namespace Books.DbContext
             {
                 throw new ArgumentNullException(nameof(options), "Options are null");
             }
+        }
+
+        public LibraryContext()
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -17,8 +17,7 @@ namespace Books.Models
             get => _releaseDate;
             set
             {
-                _releaseDate = value.ToUniversalTime();
-                _releaseDate = TimeZoneInfo.ConvertTimeToUtc(_releaseDate, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
+                _releaseDate = TimeZoneInfo.ConvertTimeToUtc(value, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
             }
         }
 
@@ -55,6 +54,23 @@ namespace Books.Models
             ReleaseDate = releaseDate;
             Author = author;
             Publisher = publisher;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BookModel model &&
+                   _releaseDate == model._releaseDate &&
+                   Title == model.Title &&
+                   Pages == model.Pages &&
+                   Genre == model.Genre &&
+                   Author == model.Author &&
+                   Publisher == model.Publisher &&
+                   ReleaseDate == model.ReleaseDate;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_releaseDate, Title, Pages, Genre, Author, Publisher, ReleaseDate);
         }
     }
 }
