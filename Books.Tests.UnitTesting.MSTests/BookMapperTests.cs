@@ -4,7 +4,6 @@ using Books.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -85,7 +84,7 @@ namespace Books.Tests.UnitTesting.MSTests
             List<PublisherEntity> publisherEntities = new List<PublisherEntity>();
             publisherEntities.Add(new PublisherEntity() { Id = Guid.NewGuid(), Name = ExpectedPublisher });
 
-            List<BookEntity> bookEntities = BookMapper.GetEntities(bookModel, genreEntities, authorEntities, publisherEntities).ToList();
+            IReadOnlyList<BookEntity> bookEntities = BookMapper.GetEntities(bookModel, genreEntities, authorEntities, publisherEntities);
 
             foreach (BookEntity bookEntity in bookEntities)
             {
@@ -151,7 +150,7 @@ namespace Books.Tests.UnitTesting.MSTests
             List<BookEntity> bookEntities = new List<BookEntity>();
             bookEntities.Add(bookEntity);
             
-            List<BookModel> bookModels = BookMapper.GetModels(bookEntities).ToList();
+            IReadOnlyList<BookModel> bookModels = BookMapper.GetModels(bookEntities);
 
             foreach (BookModel bookModel in bookModels)
             {

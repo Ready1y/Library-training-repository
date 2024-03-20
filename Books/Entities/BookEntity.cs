@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Books.Entities
 {
-    public class BookEntity
+    public class BookEntity : IEquatable<object>, IEquatable<BookEntity>
     {
         private DateTime _releaseDate;
 
@@ -14,6 +14,7 @@ namespace Books.Entities
         public DateTime ReleaseDate 
         {
             get => _releaseDate;
+
             set
             {
                 _releaseDate = TimeZoneInfo.ConvertTimeToUtc(value, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
@@ -31,20 +32,16 @@ namespace Books.Entities
                 return false;
             }
 
-            return Id.Equals(bookEntity.Id) &&
-                    Title == bookEntity.Title &&
-                    Pages == bookEntity.Pages &&
-                    ReleaseDate == bookEntity.ReleaseDate;
+            return Id.Equals(bookEntity.Id) 
+                && Title == bookEntity.Title 
+                && Pages == bookEntity.Pages 
+                && ReleaseDate == bookEntity.ReleaseDate
+            ;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is BookEntity))
-            {
-                return false;
-            }
-
-            return Equals((BookEntity)obj);
+            return Equals(obj as BookEntity);
         }
 
         public override int GetHashCode()

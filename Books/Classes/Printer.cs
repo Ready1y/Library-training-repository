@@ -1,6 +1,7 @@
 ﻿using Books.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace Books.Classes
@@ -25,6 +26,8 @@ namespace Books.Classes
 
         public static void PrintResultsToFile(string directoryOfFile, IReadOnlyCollection<BookModel> books)
         {
+            const char Coma = ',';
+
             if (books == null)
             {
                 throw new ArgumentNullException(nameof(books), "Dictionary of books is null");
@@ -46,16 +49,18 @@ namespace Books.Classes
             {
                 foreach (BookModel bookModel in books)
                 {
+                    string formatedDateTime = bookModel.ReleaseDate.ToString("d", CultureInfo.CreateSpecificCulture("en-Us"));
+
                     streamWriter.Write(bookModel.Title);
-                    streamWriter.Write(",");
+                    streamWriter.Write(Coma);
                     streamWriter.Write(bookModel.Pages);
-                    streamWriter.Write(",");
+                    streamWriter.Write(Coma);
                     streamWriter.Write(bookModel.Genre);
-                    streamWriter.Write(",");
-                    streamWriter.Write(bookModel.ReleaseDate.ToShortDateString());
-                    streamWriter.Write(",");
+                    streamWriter.Write(Coma);
+                    streamWriter.Write(formatedDateTime);
+                    streamWriter.Write(Coma);
                     streamWriter.Write(bookModel.Author);
-                    streamWriter.Write(",");
+                    streamWriter.Write(Coma);
                     streamWriter.WriteLine(bookModel.Publisher);
                 }
             }

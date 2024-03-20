@@ -116,8 +116,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             string[] expectedLines = new string[2]
             {
-                "Title1,100,Genre1,01.01.0001,Author1,Publisher1",
-                "Title2,200,Genre2,01.01.0001,Author2,Publisher2"
+                "Title1,100,Genre1,1/1/0001,Author1,Publisher1",
+                "Title2,200,Genre2,1/1/0001,Author2,Publisher2"
             };
 
             List<BookModel> books = new List<BookModel>

@@ -23,7 +23,6 @@ namespace Books.Tests.UnitTesting.MSTests
             const string publishedAfter = "10.10.1800";
             DateTime expectedPublisheAfter = new DateTime(1800, 10, 10);
 
-
             Filter filter = new Filter(expectedTitle, expectedGenre, expectedAuthor, expectedPublisher, moreThanPages, lessThanPages, publishedBefore, publishedAfter);
 
             Assert.AreEqual(expectedTitle, filter.Title);
@@ -41,14 +40,14 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             Filter filter = new Filter();
 
-            Assert.AreEqual(null, filter.Title);
-            Assert.AreEqual(null, filter.Genre);
-            Assert.AreEqual(null, filter.Author);
-            Assert.AreEqual(null, filter.Publisher);
-            Assert.AreEqual(null, filter.MoreThanPages);
-            Assert.AreEqual(null, filter.LessThanPages);
-            Assert.AreEqual(null, filter.PublishedBefore);
-            Assert.AreEqual(null, filter.PublishedAfter);
+            Assert.IsNull(filter.Title);
+            Assert.IsNull(filter.Genre);
+            Assert.IsNull(filter.Author);
+            Assert.IsNull(filter.Publisher);
+            Assert.IsNull(filter.MoreThanPages);
+            Assert.IsNull(filter.LessThanPages);
+            Assert.IsNull(filter.PublishedBefore);
+            Assert.IsNull(filter.PublishedAfter);
         }
 
         [TestMethod]

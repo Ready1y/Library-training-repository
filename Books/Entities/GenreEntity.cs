@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Books.Entities
 {
-    public class GenreEntity
+    public class GenreEntity : IEquatable<object>, IEquatable<GenreEntity>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -17,18 +17,14 @@ namespace Books.Entities
                 return false;
             }
 
-            return Id.Equals(genreEntity.Id) && 
-                    Name == genreEntity.Name;
+            return Id.Equals(genreEntity.Id)
+                && Name == genreEntity.Name
+            ;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is GenreEntity))
-            {
-                return false;
-            }
-
-            return Equals((GenreEntity)obj);
+            return Equals(obj as GenreEntity);
         }
 
         public override int GetHashCode()

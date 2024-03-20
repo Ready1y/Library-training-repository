@@ -36,26 +36,33 @@ namespace Books.Tests.UnitTesting.MSTests
 
             readerRowMock
                 .Setup(x => x.Configuration)
-                .Returns(readerConfigurationMock.Object);
+                .Returns(readerConfigurationMock.Object)
+            ;
 
             readerRowMock
                 .Setup(x => x.Context)
-                .Returns(csvContextMock.Object);
+                .Returns(csvContextMock.Object)
+            ;
 
             Mock<MemberInfo> memberInfoMock = new Mock<MemberInfo>();
             Mock<MemberMapData> memberMapDataMock = new Mock<MemberMapData>(memberInfoMock.Object);
 
             memberMapDataMock
                 .Setup(x => x.Default)
-                .Returns(DateTime.MinValue);
+                .Returns(DateTime.MinValue)
+            ;
+
             memberMapDataMock
                 .Setup(x => x.Type)
-                .Returns(typeof(DateTime));
+                .Returns(typeof(DateTime))
+            ;
+
             memberMapDataMock
                 .Setup(x => x.TypeConverterOptions)
-                .Returns(options);
+                .Returns(options)
+            ;
 
-            var result = converter.ConvertFromString(date, readerRowMock.Object, memberMapDataMock.Object);
+            DateTime result = (DateTime)converter.ConvertFromString(date, readerRowMock.Object, memberMapDataMock.Object);
 
             Assert.AreEqual(expectedDateTime, result);
         }
@@ -80,26 +87,33 @@ namespace Books.Tests.UnitTesting.MSTests
 
             readerRowMock
                 .Setup(x => x.Configuration)
-                .Returns(readerConfigurationMock.Object);
+                .Returns(readerConfigurationMock.Object)
+            ;
 
             readerRowMock
                 .Setup(x => x.Context)
-                .Returns(csvContextMock.Object);
+                .Returns(csvContextMock.Object)
+            ;
 
             Mock<MemberInfo> memberInfoMock = new Mock<MemberInfo>();
             Mock<MemberMapData> memberMapDataMock = new Mock<MemberMapData>(memberInfoMock.Object);
 
             memberMapDataMock
                 .Setup(x => x.Default)
-                .Returns(DateTime.MinValue); 
+                .Returns(DateTime.MinValue)
+            ;
+        
             memberMapDataMock
                 .Setup(x => x.Type)
-                .Returns(typeof(DateTime));
+                .Returns(typeof(DateTime))
+            ;
+
             memberMapDataMock
                 .Setup(x => x.TypeConverterOptions)
-                .Returns(options);
+                .Returns(options)
+            ;
 
-            var result = converter.ConvertFromString(date, readerRowMock.Object, memberMapDataMock.Object);
+            DateTime result = (DateTime)converter.ConvertFromString(date, readerRowMock.Object, memberMapDataMock.Object);
 
             Assert.AreEqual(default(DateTime), result);
         }

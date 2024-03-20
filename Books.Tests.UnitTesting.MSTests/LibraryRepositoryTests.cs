@@ -8,7 +8,6 @@ using Moq;
 using Moq.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -73,7 +72,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Books)
-                .ReturnsDbSet(GetFakeBooksList());
+                .ReturnsDbSet(GetFakeBooksList())
+            ;
 
             libraryContextMock
                 .Setup(x => x.Books.Add(It.IsAny<BookEntity>()))
@@ -85,7 +85,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     bookEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -136,7 +137,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Authors)
-                .ReturnsDbSet(GetFakeAuthorsList());
+                .ReturnsDbSet(GetFakeAuthorsList())
+            ;
 
             libraryContextMock
                 .Setup(x => x.Authors.Add(It.IsAny<AuthorEntity>()))
@@ -148,7 +150,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -198,7 +201,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Genres)
-                .ReturnsDbSet(GetFakeGenresList());
+                .ReturnsDbSet(GetFakeGenresList())
+            ;
 
             libraryContextMock
                 .Setup(x => x.Genres.Add(It.IsAny<GenreEntity>()))
@@ -210,7 +214,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -260,7 +265,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Publishers)
-                .ReturnsDbSet(GetFakePublishersList());
+                .ReturnsDbSet(GetFakePublishersList())
+            ;
 
             libraryContextMock
                 .Setup(x => x.Publishers.Add(It.IsAny<PublisherEntity>()))
@@ -272,7 +278,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -311,7 +318,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock 
                 .Setup(x => x.Books.Find(It.IsAny<Guid>()))
-                .Returns(bookEntity);
+                .Returns(bookEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Books.Remove(It.IsAny<BookEntity>()))
@@ -323,7 +331,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     bookEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -365,7 +374,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     bookEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -401,7 +411,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Authors.Find(It.IsAny<Guid>()))
-                .Returns(authorEntity);
+                .Returns(authorEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Authors.Remove(It.IsAny<AuthorEntity>()))
@@ -413,7 +424,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -455,7 +467,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -491,7 +504,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Genres.Find(It.IsAny<Guid>()))
-                .Returns(genreEntity);
+                .Returns(genreEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Genres.Remove(It.IsAny<GenreEntity>()))
@@ -503,7 +517,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     genreEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -545,7 +560,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     genreEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -581,7 +597,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Publishers.Find(It.IsAny<Guid>()))
-                .Returns(publisherEntity);
+                .Returns(publisherEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Publishers.Remove(It.IsAny<PublisherEntity>()))
@@ -593,7 +610,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     publisherEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -635,7 +653,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     publisherEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -650,15 +669,14 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
 
-            List<BookEntity> bookEntities = new List<BookEntity>();
-
             libraryContextMock
                 .Setup(x => x.Books)
-                .ReturnsDbSet(GetFakeBooksList());
+                .ReturnsDbSet(GetFakeBooksList())
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            bookEntities = libraryRepository.GetAllBooks().ToList();
+            IReadOnlyList<BookEntity> bookEntities = libraryRepository.GetAllBooks();
 
             Assert.IsNotNull(bookEntities);
             Assert.IsTrue(bookEntities.Count == 2);
@@ -669,15 +687,14 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
 
-            List<AuthorEntity> authorEntities = new List<AuthorEntity>();
-
             libraryContextMock
                 .Setup(x => x.Authors)
-                .ReturnsDbSet(GetFakeAuthorsList());
+                .ReturnsDbSet(GetFakeAuthorsList())
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            authorEntities = libraryRepository.GetAllAuthors().ToList();
+            IReadOnlyList<AuthorEntity> authorEntities = libraryRepository.GetAllAuthors();
 
             Assert.IsNotNull(authorEntities);
             Assert.IsTrue(authorEntities.Count == 2);
@@ -688,15 +705,14 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
 
-            List<GenreEntity> genreEntities = new List<GenreEntity>();
-
             libraryContextMock
                 .Setup(x => x.Genres)
-                .ReturnsDbSet(GetFakeGenresList());
+                .ReturnsDbSet(GetFakeGenresList())
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            genreEntities = libraryRepository.GetAllGenres().ToList();
+            IReadOnlyList<GenreEntity> genreEntities = libraryRepository.GetAllGenres();
 
             Assert.IsNotNull(genreEntities);
             Assert.IsTrue(genreEntities.Count == 2);
@@ -707,15 +723,14 @@ namespace Books.Tests.UnitTesting.MSTests
         {
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
 
-            List<PublisherEntity> publisherEntities = new List<PublisherEntity>();
-
             libraryContextMock
                 .Setup(x => x.Publishers)
-                .ReturnsDbSet(GetFakePublishersList());
+                .ReturnsDbSet(GetFakePublishersList())
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            publisherEntities = libraryRepository.GetAllPublishers().ToList();
+            IReadOnlyList<PublisherEntity> publisherEntities = libraryRepository.GetAllPublishers();
 
             Assert.IsNotNull(publisherEntities);
             Assert.IsTrue(publisherEntities.Count == 2);
@@ -743,7 +758,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Books.Find(It.IsAny<Guid>()))
-                .Returns(expectedBookEntity);
+                .Returns(expectedBookEntity)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -775,7 +791,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Authors.Find(It.IsAny<Guid>()))
-                .Returns(expectedAuthorEntity);
+                .Returns(expectedAuthorEntity)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -807,7 +824,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Genres.Find(It.IsAny<Guid>()))
-                .Returns(expectedGenreEntity);
+                .Returns(expectedGenreEntity)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -839,7 +857,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Publishers.Find(It.IsAny<Guid>()))
-                .Returns(expectedPublisherEntity);
+                .Returns(expectedPublisherEntity)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -871,15 +890,33 @@ namespace Books.Tests.UnitTesting.MSTests
             DateTime ExpectedReleaseDate = new DateTime(1000, 10, 10);
 
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
-            BookEntity newBookEntity = new BookEntity() { Id = ExpectedId, Title = ExpectedTitle, Pages = ExpectedPages, ReleaseDate = ExpectedReleaseDate, Authors = new List<AuthorEntity>(), Genres = new List<GenreEntity>(), Publishers = new List<PublisherEntity>() };
-            BookEntity oldBookEntity = new BookEntity() { Id = ExpectedId, Title = string.Empty, Pages = 0, ReleaseDate = DateTime.MinValue };
+
+            BookEntity newBookEntity = new BookEntity()
+            {
+                Id = ExpectedId,
+                Title = ExpectedTitle,
+                Pages = ExpectedPages,
+                ReleaseDate = ExpectedReleaseDate,
+                Authors = new List<AuthorEntity>(),
+                Genres = new List<GenreEntity>(),
+                Publishers = new List<PublisherEntity>()
+            };
+
+            BookEntity oldBookEntity = new BookEntity()
+            {
+                Id = ExpectedId,
+                Title = string.Empty,
+                Pages = 0,
+                ReleaseDate = DateTime.MinValue
+            };
 
             List<BookEntity> bookEntities = new List<BookEntity>();
             bookEntities.Add(oldBookEntity);
 
             libraryContextMock
                 .Setup(x => x.Books.Find(It.IsAny<Guid>()))
-                .Returns(oldBookEntity);
+                .Returns(oldBookEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Books.Remove(It.IsAny<BookEntity>()))
@@ -891,7 +928,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     bookEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             libraryContextMock
                 .Setup(x => x.Books.Add(It.IsAny<BookEntity>()))
@@ -903,7 +941,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     bookEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -949,7 +988,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Authors.Find(It.IsAny<Guid>()))
-                .Returns(oldAuthorEntity);
+                .Returns(oldAuthorEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Authors.Remove(It.IsAny<AuthorEntity>()))
@@ -961,7 +1001,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             libraryContextMock
                 .Setup(x => x.Authors.Add(It.IsAny<AuthorEntity>()))
@@ -973,7 +1014,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     authorEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -1015,7 +1057,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Genres.Find(It.IsAny<Guid>()))
-                .Returns(oldGenreEntity);
+                .Returns(oldGenreEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Genres.Remove(It.IsAny<GenreEntity>()))
@@ -1027,7 +1070,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     genreEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             libraryContextMock
                 .Setup(x => x.Genres.Add(It.IsAny<GenreEntity>()))
@@ -1039,7 +1083,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     genreEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -1081,7 +1126,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Publishers.Find(It.IsAny<Guid>()))
-                .Returns(oldPublisherEntity);
+                .Returns(oldPublisherEntity)
+            ;
 
             libraryContextMock
                 .Setup(x => x.Publishers.Remove(It.IsAny<PublisherEntity>()))
@@ -1093,7 +1139,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     publisherEntities.Remove(entity);
-                }));
+                }))
+            ;
 
             libraryContextMock
                 .Setup(x => x.Publishers.Add(It.IsAny<PublisherEntity>()))
@@ -1105,7 +1152,8 @@ namespace Books.Tests.UnitTesting.MSTests
                     }
 
                     publisherEntities.Add(entity);
-                }));
+                }))
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
@@ -1142,15 +1190,15 @@ namespace Books.Tests.UnitTesting.MSTests
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
             Func<BookEntity, bool> predicate = x => x.Title == ExpectedTitle;
             List<BookEntity> bookEntities = GetFakeBooksList();
-            List<BookEntity> actualBookEntities;
 
             libraryContextMock
                 .Setup(x => x.Books)
-                .ReturnsDbSet(bookEntities);
+                .ReturnsDbSet(bookEntities)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            actualBookEntities = libraryRepository.FindBooks(predicate).ToList();
+            IReadOnlyList<BookEntity> actualBookEntities = libraryRepository.FindBooks(predicate);
 
             Assert.IsTrue(actualBookEntities.Count != 0);
 
@@ -1186,15 +1234,15 @@ namespace Books.Tests.UnitTesting.MSTests
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
             Func<AuthorEntity, bool> predicate = x => x.Name == ExpectedName;
             List<AuthorEntity> authorEntities = GetFakeAuthorsList();
-            List<AuthorEntity> actualAuthorEntities;
 
             libraryContextMock
                 .Setup(x => x.Authors)
-                .ReturnsDbSet(authorEntities);
+                .ReturnsDbSet(authorEntities)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            actualAuthorEntities = libraryRepository.FindAuthors(predicate).ToList();
+            IReadOnlyList<AuthorEntity> actualAuthorEntities = libraryRepository.FindAuthors(predicate);
 
             Assert.IsTrue(actualAuthorEntities.Count != 0);
 
@@ -1226,15 +1274,15 @@ namespace Books.Tests.UnitTesting.MSTests
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
             Func<GenreEntity, bool> predicate = x => x.Name == ExpectedName;
             List<GenreEntity> genreEntities = GetFakeGenresList();
-            List<GenreEntity> actualGenreEntities;
 
             libraryContextMock
                 .Setup(x => x.Genres)
-                .ReturnsDbSet(genreEntities);
+                .ReturnsDbSet(genreEntities)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            actualGenreEntities = libraryRepository.FindGenres(predicate).ToList();
+            IReadOnlyList<GenreEntity> actualGenreEntities = libraryRepository.FindGenres(predicate);
 
             Assert.IsTrue(actualGenreEntities.Count != 0);
 
@@ -1266,15 +1314,15 @@ namespace Books.Tests.UnitTesting.MSTests
             Mock<LibraryContext> libraryContextMock = new Mock<LibraryContext>();
             Func<PublisherEntity, bool> predicate = x => x.Name == ExpectedName;
             List<PublisherEntity> publisherEntities = GetFakePublishersList();
-            List<PublisherEntity> actualPublishersEntities;
 
             libraryContextMock
                 .Setup(x => x.Publishers)
-                .ReturnsDbSet(publisherEntities);
+                .ReturnsDbSet(publisherEntities)
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            actualPublishersEntities = libraryRepository.FindPublishers(predicate).ToList();
+            IReadOnlyList<PublisherEntity> actualPublishersEntities = libraryRepository.FindPublishers(predicate);
 
             Assert.IsTrue(actualPublishersEntities.Count != 0);
 
@@ -1309,11 +1357,12 @@ namespace Books.Tests.UnitTesting.MSTests
 
             libraryContextMock
                 .Setup(x => x.Books)
-                .ReturnsDbSet(GetFakeBooksList());
+                .ReturnsDbSet(GetFakeBooksList())
+            ;
 
             LibraryRepository libraryRepository = new LibraryRepository(libraryContextMock.Object);
 
-            List<BookEntity> bookEntities = libraryRepository.FindBooks(filter).ToList();
+            IReadOnlyList<BookEntity> bookEntities = libraryRepository.FindBooks(filter);
 
             Assert.IsTrue(bookEntities.Count != 0);
 
@@ -1341,7 +1390,6 @@ namespace Books.Tests.UnitTesting.MSTests
                     Genres = new List<GenreEntity>(),
                     Publishers = new List<PublisherEntity>()
                 },
-
                 new BookEntity
                 {
                     Title = "Title2",
@@ -1363,7 +1411,6 @@ namespace Books.Tests.UnitTesting.MSTests
                     Name = "Author1",
                     Books = new List<BookEntity>()
                 },
-
                 new AuthorEntity
                 {
                     Name = "Author2",
@@ -1381,7 +1428,6 @@ namespace Books.Tests.UnitTesting.MSTests
                     Name = "Genre1",
                     Books = new List<BookEntity>()
                 },
-
                 new GenreEntity
                 {
                     Name = "Genre2",
@@ -1399,7 +1445,6 @@ namespace Books.Tests.UnitTesting.MSTests
                     Name = "Publisher1",
                     Books = new List<BookEntity>()
                 },
-
                 new PublisherEntity
                 {
                     Name = "Publisher2",

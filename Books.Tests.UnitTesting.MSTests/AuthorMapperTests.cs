@@ -4,7 +4,6 @@ using Books.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -29,7 +28,7 @@ namespace Books.Tests.UnitTesting.MSTests
             BookModel[] bookModels = new BookModel[1];
             bookModels[0] = new BookModel() { Author = AuthorName };
 
-            List<AuthorEntity> authorEntities = AuthorMapper.GetEntities(bookModels).ToList();
+            IReadOnlyList<AuthorEntity> authorEntities = AuthorMapper.GetEntities(bookModels);
 
             foreach (AuthorEntity authorEntity in authorEntities)
             {

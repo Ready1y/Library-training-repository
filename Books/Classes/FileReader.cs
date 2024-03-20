@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Books.Interfaces;
 using Books.Mappers;
 using Books.Models;
 using CsvHelper;
 
 namespace Books.Classes
 {
-    public class FileReader
+    public class FileReader : IFileReader
     {
         private Filter _filter;
 
         public FileReader(Filter filter)
         {
-            if(filter == null)
+            if (filter == null)
             {
                 throw new ArgumentNullException(nameof(filter), "Filter is null");
             }
@@ -45,12 +46,13 @@ namespace Books.Classes
                             && (_filter.LessThanPages == null || book.Pages < _filter.LessThanPages)
                             && (_filter.PublishedBefore == null || _filter.PublishedBefore == DateTime.MinValue || DateTime.Compare(_filter.PublishedBefore.Value.ToUniversalTime(), book.ReleaseDate) > 0)
                             && (_filter.PublishedAfter == null || _filter.PublishedAfter == DateTime.MinValue || DateTime.Compare(_filter.PublishedAfter.Value.ToUniversalTime(), book.ReleaseDate) < 0)
-                            )
-                            .ToArray()
-                        ;
+                        )
+                        .ToArray()
+                    ;
                 }
             }
-            return bookModels; 
+
+            return bookModels;
         }
     }
 }

@@ -29,16 +29,20 @@ namespace Books.DbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookEntity>()
-                .HasKey(b => b.Id);
+                .HasKey(b => b.Id)
+            ;
 
             modelBuilder.Entity<AuthorEntity>()
-                .HasKey(a => a.Id);
+                .HasKey(a => a.Id)
+            ;
 
             modelBuilder.Entity<GenreEntity>()
-                .HasKey(g => g.Id);
+                .HasKey(g => g.Id)
+            ;
 
             modelBuilder.Entity<PublisherEntity>()
-                .HasKey(p => p.Id);
+                .HasKey(p => p.Id)
+            ;
 
             modelBuilder.Entity<BookEntity>()
                 .HasMany(b => b.Authors)

@@ -5,7 +5,6 @@ using Books.Mappers;
 using Books.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Books
 {
@@ -16,9 +15,9 @@ namespace Books
     {
         private readonly Filter _appFilter;
         private readonly ILibraryRepository _appLibraryRepository;
-        private readonly FileReader _fileReader;
+        private readonly IFileReader _fileReader;
 
-        public App(Filter filter, ILibraryRepository libraryRepository, FileReader fileReader) 
+        public App(Filter filter, ILibraryRepository libraryRepository, IFileReader fileReader) 
         {
             if(filter == null)
             {
@@ -52,22 +51,22 @@ namespace Books
 
             string filePath = GetPath(args);
 
-            BookModel[] bookModels = _fileReader.Read(filePath).ToArray();
+            IReadOnlyList<BookModel> bookModels = _fileReader.Read(filePath);
 
-            List<GenreEntity> genreEntities = GenreMapper.GetEntities(bookModels).ToList();
-            List<AuthorEntity> authorEntities = AuthorMapper.GetEntities(bookModels).ToList();
-            List<PublisherEntity> publisherEntities = PublisherMapper.GetEntities(bookModels).ToList();
+            IReadOnlyList<GenreEntity> genreEntities = GenreMapper.GetEntities(bookModels);
+            IReadOnlyList<AuthorEntity> authorEntities = AuthorMapper.GetEntities(bookModels);
+            IReadOnlyList<PublisherEntity> publisherEntities = PublisherMapper.GetEntities(bookModels);
 
-            List<BookEntity> bookEntities = BookMapper.GetEntities(bookModels, genreEntities, authorEntities, publisherEntities).ToList();
+            IReadOnlyList<BookEntity> bookEntities = BookMapper.GetEntities(bookModels, genreEntities, authorEntities, publisherEntities);
 
-            foreach (var bookEntity in bookEntities)
+            foreach (BookEntity bookEntity in bookEntities)
             {
                 _appLibraryRepository.AddBook(bookEntity);
             }
 
             IReadOnlyList<BookEntity> filteredBooksEntities = _appLibraryRepository.FindBooks(_appFilter);
 
-            List<BookModel> result = BookMapper.GetModels(filteredBooksEntities).ToList();
+            IReadOnlyList<BookModel> result = BookMapper.GetModels(filteredBooksEntities);
 
             string nameOfDirectory = PathIO.GetDirectoryName(filePath);
 
@@ -75,13 +74,8 @@ namespace Books
             Printer.PrintResultsToFile(nameOfDirectory, result);
         }
 
-        private string GetPath(string[] args)
+        private static string GetPath(string[] args)
         {
-            if (args == null)
-            {
-                throw new ArgumentNullException(nameof(args), "Args is null");
-            }
-
             string filePath = Path.GetFromArgs(args, nameof(filePath));
 
             if (filePath == string.Empty)

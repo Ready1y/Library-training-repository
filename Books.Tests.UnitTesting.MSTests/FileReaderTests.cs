@@ -46,11 +46,11 @@ namespace Books.Tests.UnitTesting.MSTests
             Filter filter = new Filter();
             FileReader fileReader = new FileReader(filter);
 
-            List<BookModel> actualBooks = fileReader.Read(InputPath).ToList();
+            IReadOnlyList<BookModel> actualBooks = fileReader.Read(InputPath);
 
-            List<BookModel> result = expectedBooks.Except(actualBooks).ToList();
+            BookModel[] result = expectedBooks.Except(actualBooks).ToArray();    
 
-            Assert.AreEqual(result.Count, 0);
+            Assert.AreEqual(result.Length, 0);
         }
 
         [TestMethod]

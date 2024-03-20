@@ -29,7 +29,7 @@ namespace Books
             services.AddDbContext<LibraryContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
             services.AddSingleton<Filter>(configuration.GetSection("FilterSettings").Get<Filter>());
             services.AddScoped<ILibraryRepository, LibraryRepository>();
-            services.AddScoped<FileReader>();
+            services.AddScoped<IFileReader, FileReader>();
             services.AddSingleton<App>();
 
             ServiceProvider = services.BuildServiceProvider();
