@@ -32,8 +32,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             List<BookModel> books = new List<BookModel>
             {
-                { new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue) },
-                { new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue) }
+                new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue),
+                new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue)
             };
 
             using (StringWriter stringWriter = new StringWriter())
@@ -67,7 +67,7 @@ namespace Books.Tests.UnitTesting.MSTests
             string directoryPath = null;
             List<BookModel> books = new List<BookModel>
             {
-                { new BookModel() }
+                new BookModel()
             };
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, books);
@@ -79,9 +79,10 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_PrintResultsToFile_WhenInputFileDirectoryContainsInvalidPathChars_ThrowsArgumentException()
         {
             string directoryPath = ".|Files|";
+
             List<BookModel> books = new List<BookModel>
             {
-                { new BookModel() }
+                new BookModel()
             };
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, books);
@@ -93,9 +94,10 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_PrintResultsToFile_WhenInputFileDirectoryIsWrong_ThrowsArgumentException()
         {
             string directoryPath = "./Filessssss/";
+
             List<BookModel> books = new List<BookModel>
             {
-                { new BookModel() }
+                new BookModel()
             };
 
             Action action = () => Printer.PrintResultsToFile(directoryPath, books);
@@ -122,8 +124,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             List<BookModel> books = new List<BookModel>
             {
-                { new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue) },
-                { new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue) }
+                new BookModel("Title1", 100, "Genre1", "Author1", "Publisher1", DateTime.MinValue),
+                new BookModel("Title2", 200, "Genre2", "Author2", "Publisher2", DateTime.MinValue)
             };
 
             Printer.PrintResultsToFile(directoryOfFile, books);

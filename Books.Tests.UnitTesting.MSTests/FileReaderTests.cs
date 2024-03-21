@@ -48,7 +48,7 @@ namespace Books.Tests.UnitTesting.MSTests
 
             IReadOnlyList<BookModel> actualBooks = fileReader.Read(InputPath);
 
-            BookModel[] result = expectedBooks.Except(actualBooks).ToArray();    
+            BookModel[] result = expectedBooks.Except(actualBooks).ToArray();
 
             Assert.AreEqual(result.Length, 0);
         }

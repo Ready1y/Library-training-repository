@@ -1,9 +1,10 @@
-﻿using System;
-using System.Globalization;
+﻿using Books.Entities;
+using System;
+using System.Xml.Linq;
 
 namespace Books.Models
 {
-    public class BookModel
+    public class BookModel : IEquatable<BookModel>, IEquatable<object>
     {
         private DateTime _releaseDate;
 
@@ -16,6 +17,7 @@ namespace Books.Models
         public DateTime ReleaseDate
         {
             get => _releaseDate;
+
             set
             {
                 _releaseDate = TimeZoneInfo.ConvertTimeToUtc(value, TimeZoneInfo.FindSystemTimeZoneById("UTC"));
@@ -57,16 +59,26 @@ namespace Books.Models
             Publisher = publisher;
         }
 
+        public bool Equals(BookModel bookModel)
+        {
+            if (bookModel == null)
+            {
+                return false;
+            }
+
+            return _releaseDate == bookModel._releaseDate
+                && Title == bookModel.Title
+                && Pages == bookModel.Pages
+                && Genre == bookModel.Genre
+                && Author == bookModel.Author
+                && Publisher == bookModel.Publisher
+                && ReleaseDate == bookModel.ReleaseDate
+            ;
+        }
+
         public override bool Equals(object obj)
         {
-            return obj is BookModel model &&
-                   _releaseDate == model._releaseDate &&
-                   Title == model.Title &&
-                   Pages == model.Pages &&
-                   Genre == model.Genre &&
-                   Author == model.Author &&
-                   Publisher == model.Publisher &&
-                   ReleaseDate == model.ReleaseDate;
+            return Equals(obj as BookModel);
         }
 
         public override int GetHashCode()

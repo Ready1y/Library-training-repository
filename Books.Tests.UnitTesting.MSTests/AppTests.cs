@@ -147,7 +147,8 @@ namespace Books.Tests.UnitTesting.MSTests
 
             fileReaderMock
                 .Setup(reader => reader.Read(It.IsAny<string>()))
-                .Returns(bookModels);
+                .Returns(bookModels)
+            ;
 
             App app = new App(filter, libraryRepositoryMock.Object, fileReaderMock.Object);
 

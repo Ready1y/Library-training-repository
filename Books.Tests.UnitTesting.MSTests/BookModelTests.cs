@@ -1,6 +1,8 @@
-﻿using Books.Models;
+﻿using Books.Entities;
+using Books.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Net.Http.Headers;
 
 namespace Books.Tests.UnitTesting.MSTests
 {
@@ -245,6 +247,85 @@ namespace Books.Tests.UnitTesting.MSTests
             BookModel actualBookModel = new BookModel();
 
             Assert.IsNotNull(actualBookModel);
+        }
+
+        [TestMethod]
+        public void Test_GetHashCode_WhenInputIsSameObjects_ReturnsSameValue()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = new BookModel { Title = book1.Title, Pages = book1.Pages, ReleaseDate = book1.ReleaseDate, Author = book1.Author, Genre = book1.Genre, Publisher = book1.Publisher };
+
+            int hashCode1 = book1.GetHashCode();
+            int hashCode2 = book2.GetHashCode();
+
+            Assert.AreEqual(hashCode1, hashCode2);
+        }
+
+        [TestMethod]
+        public void Test_GetHashCode_WhenInputIsDifferentObjects_ReturnsDifferentValue()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = new BookModel { Title = "Title2", Pages = 200, ReleaseDate = DateTime.MaxValue, Author = "Author2", Genre = "Genre2", Publisher = "Publisher2" };
+
+            int hashCode1 = book1.GetHashCode();
+            int hashCode2 = book2.GetHashCode();
+
+            Assert.AreNotEqual(hashCode1, hashCode2);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsEqualObject_ReturnsTrue()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = new BookModel { Title = book1.Title, Pages = book1.Pages, ReleaseDate = book1.ReleaseDate, Author = book1.Author, Genre = book1.Genre, Publisher = book1.Publisher };
+
+            bool result = book1.Equals((object)book2);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsDifferentObjects_ReturnsFalse()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = new BookModel { Title = "Title2", Pages = 200, ReleaseDate = DateTime.MaxValue, Author = "Author2", Genre = "Genre2", Publisher = "Publisher2" }; ;
+
+            bool result = book1.Equals((object)book2);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsEqualBookModels_ReturnsTrue()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = new BookModel { Title = book1.Title, Pages = book1.Pages, ReleaseDate = book1.ReleaseDate, Author = book1.Author, Genre = book1.Genre, Publisher = book1.Publisher };
+
+            bool result = book1.Equals((object)book2);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsDifferentBookModels_ReturnsFalse()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = new BookModel { Title = "Title2", Pages = 200, ReleaseDate = DateTime.MaxValue, Author = "Author2", Genre = "Genre2", Publisher = "Publisher2" };
+
+            bool result = book1.Equals((object)book2);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Test_Equals_WhenInputIsNull_ReturnsFalse()
+        {
+            BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
+            BookModel book2 = null;
+
+            bool result = book1.Equals(book2);
+
+            Assert.IsFalse(result);
         }
     }
 }
