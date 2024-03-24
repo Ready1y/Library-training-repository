@@ -33,23 +33,50 @@ namespace Books
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        public static DbContextOptionsBuilder UseSQLFactory(this DbContextOptionsBuilder optionsBuilder, IConfiguration configuration)
+        private static DbContextOptionsBuilder UseSQLFactory(this DbContextOptionsBuilder optionsBuilder, IConfiguration configuration)
         {
-            string sqlProvider = configuration.GetSection("SQLProviders").Value;
+            const string SqlProviderKey = "SQLProvider";
+            const string NpgSQLValue = "NpgSQL";
+            const string MsSQLValue = "MsSQL";
+
+            const string NpgSQLConnectionStringKey = "NpgSQLConnection";
+            const string MsSQLConnectionStringKey = "MsSQLConnection";
+
+            string sqlProvider = configuration.GetSection(SqlProviderKey).Value;
+
+            if (string.IsNullOrWhiteSpace(sqlProvider))
+            {
+                throw new MissingFieldException("There is a missing value for the key 'SQLProvider'. Probably an invalid key.");
+            }
 
             switch (sqlProvider)
             {
-                case "NpgSQL":
-                    UseNpgSQL(optionsBuilder, configuration.GetConnectionString("DefaultConnection"));
+                case NpgSQLValue:
+                    string NpgSqlConnectionString = configuration.GetConnectionString(NpgSQLConnectionStringKey);
+
+                    UseNpgSQL(optionsBuilder, NpgSqlConnectionString);
                     break;
 
-                case "MsSQL":
-                    UseMsSQL(optionsBuilder, configuration.GetConnectionString("DefaultConnection"));
+                case MsSQLValue:
+                    string MsSqlConnectionString = configuration.GetConnectionString(MsSQLConnectionStringKey);
+
+                    UseMsSQL(optionsBuilder, MsSqlConnectionString);
                     break;
 
                 default:
-                    Console.WriteLine(sqlProvider);
-                    throw new ArgumentException("SQL provider is incorreect", nameof(sqlProvider));
+                    throw new NotSupportedException(string.Format(
+                        "Provider '{0}' is not supported.{1}{1}Available providers:{1}{2}",
+                        sqlProvider,
+                        Environment.NewLine,
+                        string.Join(
+                            Environment.NewLine,
+                            new string[]
+                            {
+                                NpgSQLValue,
+                                MsSQLValue
+                            }
+                        )
+                    ));
             }
 
             return optionsBuilder;
@@ -57,31 +84,11 @@ namespace Books
 
         private static void UseNpgSQL(DbContextOptionsBuilder optionsBuilder, string connectionString)
         {
-            if(optionsBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(optionsBuilder), "Options builder is null");
-            }
-
-            if (connectionString == null)
-            {
-                throw new ArgumentNullException(nameof(connectionString), "Connection string is null");
-            }
-
             optionsBuilder.UseNpgsql(connectionString);
         }
 
         private static void UseMsSQL(DbContextOptionsBuilder optionsBuilder, string connectionString)
         {
-            if (optionsBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(optionsBuilder), "Options builder is null");
-            }
-
-            if (connectionString == null)
-            {
-                throw new ArgumentNullException(nameof(connectionString), "Connection string is null");
-            }
-
             optionsBuilder.UseSqlServer(connectionString);
         }
     }

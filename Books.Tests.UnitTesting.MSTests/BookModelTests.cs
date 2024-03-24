@@ -288,7 +288,7 @@ namespace Books.Tests.UnitTesting.MSTests
         public void Test_Equals_WhenInputIsDifferentObjects_ReturnsFalse()
         {
             BookModel book1 = new BookModel { Title = "Title1", Pages = 100, ReleaseDate = DateTime.MinValue, Author = "Author1", Genre = "Genre1", Publisher = "Publisher1" };
-            BookModel book2 = new BookModel { Title = "Title2", Pages = 200, ReleaseDate = DateTime.MaxValue, Author = "Author2", Genre = "Genre2", Publisher = "Publisher2" }; ;
+            BookModel book2 = new BookModel { Title = "Title2", Pages = 200, ReleaseDate = DateTime.MaxValue, Author = "Author2", Genre = "Genre2", Publisher = "Publisher2" };
 
             bool result = book1.Equals((object)book2);
 
