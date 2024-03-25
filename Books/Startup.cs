@@ -52,15 +52,15 @@ namespace Books
             switch (sqlProvider)
             {
                 case NpgSQLValue:
-                    string NpgSqlConnectionString = configuration.GetConnectionString(NpgSQLConnectionStringKey);
+                    string npgSqlConnectionString = configuration.GetConnectionString(NpgSQLConnectionStringKey);
 
-                    UseNpgSQL(optionsBuilder, NpgSqlConnectionString);
+                    UseNpgSQL(optionsBuilder, npgSqlConnectionString);
                     break;
 
                 case MsSQLValue:
-                    string MsSqlConnectionString = configuration.GetConnectionString(MsSQLConnectionStringKey);
+                    string msSqlConnectionString = configuration.GetConnectionString(MsSQLConnectionStringKey);
 
-                    UseMsSQL(optionsBuilder, MsSqlConnectionString);
+                    UseMsSQL(optionsBuilder, msSqlConnectionString);
                     break;
 
                 default:
